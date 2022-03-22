@@ -1,0 +1,38 @@
+<div class="sidebar-header">
+    <h4>IDQBRN</h4>
+    <h5>Vigilância Epidemiológica</h5>
+</div>
+
+<ul class="list-unstyled components">
+    <li class="active">
+        <a href="#userSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-5.jpg"
+            class="rounded-circle z-depth-0"
+            alt="avatar image"
+            height="30"/> Olá, Fulano!
+        </a>
+        <ul class="collapse list-unstyled" id="userSubmenu">
+            <li><a href="#"> Minha Área</a></li>
+            <li><a href="#"> Alterar Cadastro</a></li>
+            <li><a href="#"> Sair</a></li>
+        </ul>
+    </li>
+    <li><a href="#" id="diseaseregister"><i class='fas fa-hospital'></i> Registrar Doença</a></li>
+    <li><a href="#" id="csvimporter"><i class='fas fa-file-medical'></i> Atualizar Csv</a></li>
+    <li><a href="#"><i class="fas fa-briefcase"></i> Sobre nós</a></li>
+    <li><a href="#"><i class="fas fa-phone"></i> Contato</a></li>
+</ul>
+
+<script>
+    $(document).ready(function () {
+        $('#home').on('click', function () {
+            document.getElementById("content").src="home.html";
+        });
+        $('#diseaseregister').on('click', function () {
+            $("#content").load("components/diseaseregister.html");
+        });
+        $('#csvimporter').on('click', function () {
+            $("#content").load("components/csvimporter.html");
+        });
+    });
+</script>
