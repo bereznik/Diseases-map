@@ -3,7 +3,7 @@
     <h5>Vigilância Epidemiológica</h5>
 </div>
 
-<ul class="list-unstyled components">
+<ul class="list-unstyled components mb-0">
     <li class="active">
         <a href="#userSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
             <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-5.jpg"
@@ -12,27 +12,54 @@
             height="30"/> Olá, Fulano!
         </a>
         <ul class="collapse list-unstyled" id="userSubmenu">
-            <li><a href="#"> Minha Área</a></li>
-            <li><a href="#"> Alterar Cadastro</a></li>
-            <li><a href="#"> Sair</a></li>
+            <li><a id="user_area" href="#"> Área do Usuário</a></li>
+            <li><a href="../index.html"> Sair</a></li>
         </ul>
     </li>
-    <li><a href="#" id="diseaseregister"><i class='fas fa-hospital'></i> Registrar Doença</a></li>
-    <li><a href="#" id="csvimporter"><i class='fas fa-file-medical'></i> Atualizar Csv</a></li>
-    <li><a href="#"><i class="fas fa-briefcase"></i> Sobre nós</a></li>
-    <li><a href="#"><i class="fas fa-phone"></i> Contato</a></li>
+</ul>
+
+<ul class="list-unstyled components mt-0">
+    <li>
+        <a href="#diseasesSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            Registro de Doenças
+        </a>
+        <ul class="collapse list-unstyled" id="diseasesSubmenu">
+            <li><a id="notifications" href="#"> Tabela de Notificações</a></li>
+            <li><a id="diseases" href="#"> Descrição de Doenças</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href="#usersSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            Gerenciar Usuários
+        </a>
+        <ul class="collapse list-unstyled" id="usersSubmenu">
+            <li><a id="register" href="#"> Novo Usuário</a></li>
+            <li><a id="user_table" href="#"> Usuários Cadastrados</a></li>
+        </ul>
+    </li>
+    <li><a href="https://datasus.saude.gov.br/acesso-a-informacao/doencas-e-agravos-de-notificacao-de-2007-em-diante-sinan/"> Data SUS</a></li>
+    <li><a id="contact" href="#"> Suporte</a></li>
 </ul>
 
 <script>
     $(document).ready(function () {
-        $('#home').on('click', function () {
-            document.getElementById("content").src="home.html";
+        $('#user_area').on('click', function () {
+            $("#content").load("components/user_area.html");
         });
-        $('#diseaseregister').on('click', function () {
-            $("#content").load("components/diseaseregister.html");
+        $('#register').on('click', function () {
+            $("#content").load("components/register.html");
         });
-        $('#csvimporter').on('click', function () {
-            $("#content").load("components/csvimporter.html");
+        $('#user_table').on('click', function () {
+            $("#content").load("components/user_table.html");
+        });
+        $('#notifications').on('click', function () {
+            $("#content").load("components/notifications.html");
+        });
+        $('#diseases').on('click', function () {
+            $("#content").load("components/diseases.html");
+        });
+        $('#contact').on('click', function () {
+            $("#content").load("components/contact.html");
         });
     });
 </script>

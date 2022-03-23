@@ -36,17 +36,23 @@
     <!-- JavaScript -->
     <script>
         $(document).ready(function () {
-            $("#navbar").load("components/navbar_restrict.html");
+            $("#navbar").load("components/navbar.html");
+            $("#sidebar").load("components/sidebar.html");
             $("#content").load("components/home.html");
         });
     </script>
 </head>
 
 <body>
-    <!-- Main Code -->
-    <div class="container-fluid p-0" id="main">
-        <div id="navbar"></div>
-        <div id="content"> </div>
+    <div class="wrapper">
+        <!-- Sidebar Code -->
+        <nav id="sidebar"></nav>
+
+        <!-- Main Code -->
+        <div class="container-fluid p-0" id="main">
+            <div id="navbar"></div>
+            <div id="content"> </div>
+        </div>
     </div>
 </body>
 

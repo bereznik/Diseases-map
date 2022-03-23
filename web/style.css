@@ -29,14 +29,20 @@ a, a:hover, a:focus {
     align-items: stretch;
 }
 
+.container-login{
+    width: 100%;
+    margin-top: 10px;
+}
+
 #content {
     margin-top: 40px;
 }
 
 #sidebar {
-    min-width: 300px;
-    max-width: 300px;
+    min-width: 250px;
+    max-width: 250px;
     min-height: 100vh;
+    margin-left: -250px;
     background: #f8f9fa;
     color: rgb(0, 0, 0);
     transition: all 0.3s;
@@ -49,7 +55,7 @@ a, a:hover, a:focus {
 }
 
 #sidebar.active {
-    margin-left: -300px;
+    margin-left: 0px;
 }
 
 #sidebar ul.components {
