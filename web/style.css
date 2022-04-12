@@ -18,6 +18,14 @@ p {
     color: #999;
 }
 
+.p2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1em;
+    font-weight: 300;
+    line-height: 1.7em;
+    color: rgb(0, 0, 0);
+}
+
 a, a:hover, a:focus {
     color: #da0000;
     text-decoration: none;
@@ -35,14 +43,15 @@ a, a:hover, a:focus {
 }
 
 #content {
-    margin-top: 40px;
+    margin-top: 30px;
+    padding: 10px;
 }
 
 #sidebar {
-    min-width: 250px;
-    max-width: 250px;
+    min-width: 300px;
+    max-width: 300px;
     min-height: 100vh;
-    margin-left: -250px;
+    margin-left: -300px;
     background: #f8f9fa;
     color: rgb(0, 0, 0);
     transition: all 0.3s;
