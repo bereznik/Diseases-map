@@ -118,3 +118,34 @@ ul ul a {
     height: 400px;
     width: 100%;
 }
+<<<<<<< Updated upstream
+=======
+
+.search-input {
+    padding: 5px;
+}
+
+body {
+    overflow: scroll;
+}
+
+.card-disease-image {
+    float: left;
+    height: 10vw;
+    object-fit: cover;
+}
+
+.modal-disease-image {
+    display: block;
+    height: 10vw;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.modal-text-input{
+    white-space: normal;
+    text-align: justify;
+    -moz-text-align-last: center;
+    text-align-last: center;
+}
+>>>>>>> Stashed changes
