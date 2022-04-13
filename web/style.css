@@ -26,7 +26,9 @@ p {
     color: rgb(0, 0, 0);
 }
 
-a, a:hover, a:focus {
+a,
+a:hover,
+a:focus {
     color: #da0000;
     text-decoration: none;
     transition: all 0.3s;
@@ -37,7 +39,7 @@ a, a:hover, a:focus {
     align-items: stretch;
 }
 
-.container-login{
+.container-login {
     width: 100%;
     margin-top: 10px;
 }
@@ -88,7 +90,8 @@ a, a:hover, a:focus {
     background: #fff;
 }
 
-#sidebar ul li.active > a, a[aria-expanded="true"] {
+#sidebar ul li.active>a,
+a[aria-expanded="true"] {
     color: #fff;
     background: #da0000;
 }
@@ -109,6 +112,7 @@ ul ul a {
     #sidebar {
         margin-left: -250px;
     }
+
     #sidebar.active {
         margin-left: 0;
     }
@@ -117,4 +121,28 @@ ul ul a {
 .map {
     height: 400px;
     width: 100%;
-  }
+}
+
+.search-input {
+    padding: 5px;
+}
+
+.card-disease-image {
+    float: left;
+    height: 10vw;
+    object-fit: cover;
+}
+
+.modal-disease-image {
+    display: block;
+    height: 10vw;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.modal-text-input{
+    white-space: normal;
+    text-align: justify;
+    -moz-text-align-last: center;
+    text-align-last: center;
+}
