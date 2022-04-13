@@ -146,3 +146,7 @@ body {
     -moz-text-align-last: center;
     text-align-last: center;
 }
+
+.modal-body{
+    text-align: center;
+}

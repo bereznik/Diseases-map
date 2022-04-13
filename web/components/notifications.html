@@ -1,13 +1,10 @@
-
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-
 <div class="container">
-  <h2>tabela epidemiologica brasileira</h2>
-  <p>Procure alguma informacao na tabela:</p>  
+  <div style="padding-bottom: 10px;">
+    <p class="h1">Tabela de Notificações<br/></p>
+    <p class="p2">
+      Procure alguma informacao na tabela:
+    </p>
+  </div>
   <input class="form-control" id="myInput" type="text" placeholder="Procurar...">
   <br>
   <br>
@@ -23,7 +20,7 @@
       <tbody id="myTable">
         <tr>
           <th scope="row">Rio de Janeiro</th>
-          <td>Prop 2</td>
+          <td>Dengue</td>
           <td>16</td>
           <td>30</td>
         </tr>
@@ -54,6 +51,7 @@
       </tbody>
     </table>
 </div>
+
 <script>
   $(document).ready(function(){
     $("#myInput").on("keyup", function() {
