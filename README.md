@@ -4,7 +4,10 @@
 Code related to an interactive map of diseases in Brazil, developed for IDQBRN
 
 ## Install - Web
-Open terminal in /web and type the following commands: 
-> npm install --global http-server
+Check dependecies:
+> python -V
+> python -m django --version
 
-> http-server
+This project uses Python 3.9.2 and Django 4.0.4.
+Open terminal in \web\diseasesmap and type the following commands: 
+> python manage.py runserver

@@ -1,0 +1,128 @@
+{% extends "basic_admin.html" %}
+
+{% block content %}
+<div id="content">
+<div class="container">
+  <div style="padding-bottom: 10px;">
+    <p class="h1">Tabela de Usuários Cadastrados<br/></p>
+    <p class="p2">
+      Procure alguma informacao na tabela:
+    </p>
+  </div>
+  <div class="row">
+    <div class="col-xl">
+      <input class="form-control" id="myInput" type="text" placeholder="Procurar...">
+    </div>
+    <div class="col-">
+      <button type="button" class="btn btn-light" data-toggle="modal" data-target="#add_user">
+          <i class="fas fa-plus"></i>
+          Novo Usuário
+      </button>
+    </div>
+  </div>
+    <br>
+    <br>
+    <table class="table table-striped table-bordered table-hover table-condensed">
+        <thead>
+          <tr>
+            <th scope="col">Posto/Grad</th>
+            <th scope="col">Nome</th>
+          </tr>
+        </thead>
+        <tbody id="myTable">
+          <tr>
+            <th scope="row">Ten</th>
+            <td>André Fernandes</td>
+            <td><i class="fas fa-edit"></i></td>
+            <td><i class="fas fa-trash"></i></td>
+          </tr>
+          <tr>
+            <th scope="row">Ten</th>
+            <td>Gustavo Carnevale</td>
+            <td><i class="fas fa-edit"></i></td>
+            <td><i class="fas fa-trash"></i></td>
+          </tr>
+          <tr>
+            <th scope="row">Ten</th>
+            <td>Mayara Ribeiro</td>
+            <td><i class="fas fa-edit"></i></td>
+            <td><i class="fas fa-trash"></i></td>
+          </tr>
+          <tr>
+            <th scope="row">Asp</th>
+            <td>Amanda Lavinsky</td>
+            <td><i class="fas fa-edit"></i></td>
+            <td><i class="fas fa-trash"></i></td>
+          </tr>
+          <tr>
+            <th scope="row">Asp</th>
+            <td>Bernard Reznik</td>
+            <td><i class="fas fa-edit"></i></td>
+            <td><i class="fas fa-trash"></i></td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+
+  <div class="modal fade" id="add_user" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cadastrar Novo Usuário</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <form>
+                <div class="form-group">
+                    <div class="row">
+                      <div class="col">
+                        <label for="posto" class="col-form-label">Posto/Grad</label>
+                        <input type="text" id="posto" name="posto" class="form-control form-control-lg"/>
+                      </div>
+                      <div class="col">
+                        <label for="om" class="col-form-label">OM/Empresa</label>
+                        <input type="text" id="om" name="om" class="form-control form-control-lg"/>
+                      </div>
+                    </div>
+                    
+                        <label for="name" class="col-form-label">Nome Completo</label>
+                        <input type="text" id="name" name="name" class="form-control form-control-lg"/>
+                    <div class="row">
+                      <div class="col">
+                        <label for="email" class="col-form-label">Email</label>
+                        <input type="email" id="username" name="username" class="form-control form-control-lg"/>
+                      </div>
+                      <div class="col">
+                        <label for="password" class="col-form-label">Senha</label>
+                        <input type="password" id="password" name="password" class="form-control form-control-lg"/>
+                      </div>
+                    </div>
+                </div>
+            </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Voltar</button>
+                <!-- <button type="button" class="btn btn-danger">Remover</button> -->
+                <button type="button" class="btn btn-success">Atualizar</button>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+  
+  <script>
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+    </script>
+  
+  {% endblock %}
+  
