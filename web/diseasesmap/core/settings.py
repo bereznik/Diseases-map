@@ -86,8 +86,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'diseasesmapdb',
-        'USER': 'root',
-        'PASSWORD': '21745070',
+        'USER': 'diseasesmapadmin',
+        'PASSWORD': 'diseasesmap',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
