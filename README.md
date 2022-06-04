@@ -22,6 +22,9 @@ Create a database 'diseasesmapdb' and create a new user for this database:
 > mysql > GRANT ALL PRIVILEGES ON diseasesmapdb . * TO 'diseasesmapadmin'@'localhost';
 
 To create and update tables, open terminal in \web\diseasesmap and type the following commands:
-> pip install
+> pip djangorestframework
+> pip install json
+> pip install itsdangerous==2.0.1
+> pip install Flask==2.0.1
+no mysql usar "create database diseasesmapdb;"
 > python manage.py makemigrations server
-> python manage.py migrate server 
