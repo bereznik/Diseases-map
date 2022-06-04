@@ -110,11 +110,16 @@ def doencasApi(request,pathId=0):
         return JsonResponse("Deletado com sucesso",safe=False)
 
 @csrf_exempt
-def usuariosApi(request,pathId=0):
+def usuariosApi(request,email=0,pathId=0):
     if request.method=='GET':
-        usuarios = Usuarios.objects.all()
-        usuarios_serializer=UsuariosSerializers(usuarios,many=True)
-        return JsonResponse(usuarios_serializer.data,safe=False)
+        if email==0:
+            usuarios = Usuarios.objects.all()
+            usuarios_serializer=UsuariosSerializers(usuarios,many=True)
+            return JsonResponse(usuarios_serializer.data,safe=False)
+        else:
+            usuario=Usuarios.objects.get(email=email)
+            usuarios_serializer=UsuariosSerializers(usuario)
+            return JsonResponse(usuarios_serializer.data,safe=False)
     elif request.method=='POST':
         usuarios_data=JSONParser().parse(request)
         usuarios_serializer=UsuariosSerializers(data=usuarios_data)

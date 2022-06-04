@@ -12,7 +12,7 @@
     <!-- Using Bootstrap4 -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
         integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="/../static/css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.14.1/css/ol.css" type="text/css">
     
 
@@ -57,8 +57,8 @@
                     height="30"/> Olá, Marina!
                 </a>
                 <ul class="collapse list-unstyled" id="userSubmenu">
-                    <li><a id="user_area" href="/account/"> Área do Usuário</a></li>
-                    <li><a href="/dashboard/"> Sair</a></li>
+                    <li><a id="user_area" href="/admin/account/"> Área do Usuário</a></li>
+                    <li><a href="/login"> Sair</a></li>
                 </ul>
             </li>
         </ul>
@@ -69,11 +69,11 @@
                     Registro de Doenças
                 </a>
                 <ul class="collapse list-unstyled" id="diseasesSubmenu">
-                    <li><a id="notifications" href="/notifications/"> Tabela de Notificações</a></li>
-                    <li><a id="diseases" href="/diseases/"> Descrição de Doenças</a></li>
+                    <li><a id="notifications" href="/admin/notifications/"> Tabela de Notificações</a></li>
+                    <li><a id="diseases" href="/admin/diseases/"> Descrição de Doenças</a></li>
                 </ul>
             </li>
-            <li><a id="contact" href="/usertable/"> Gerenciar Usuários</a></li>
+            <li><a id="contact" href="/admin/usertable/"> Gerenciar Usuários</a></li>
             <li><a href="https://datasus.saude.gov.br/acesso-a-informacao/doencas-e-agravos-de-notificacao-de-2007-em-diante-sinan/"> Data SUS</a></li>
             <li><a id="contact" href="#"> Suporte</a></li>
         </ul>
@@ -88,18 +88,18 @@
                         <button type="button" id="sidebarCollapse" class="btn btn-light">
                             <i class="fas fa-align-justify"></i>
                         </button>
-                        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/admin/">Home</a></li>
                     </ul>
             
                     <a class="navbar-brand" href="/">
-                        <img src="../static/images/logo.jpg"
+                        <img src="/../static/images/logo.jpg"
                             height="30" class="d-inline-block align-top" alt="">
                         IDQBRN
                     </a>
             
                     <ul class="nav navbar-nav mr-right">
-                        <li class="nav-item"><a class="nav-link" href="/about/" id="about">Sobre Nós</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/contact/" id="contact">Contato</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/admin/about/" id="about">Sobre Nós</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/admin/contact/" id="contact">Contato</a></li>
                     </ul>
                 </div>
             </nav>

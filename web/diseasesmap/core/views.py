@@ -1,8 +1,20 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpRequest
+from itsdangerous import json
+
+from types import SimpleNamespace
+from django.contrib import messages
+from server import views
 
 def dashboard(request):
     return render(request, 'dashboard.html', {})
+
+def about_restrict(request):
+    return render(request, 'about_restrict.html', {})
+
+def contact_restrict(request):
+    return render(request, 'contact_restrict.html', {})
 
 def about(request):
     return render(request, 'about.html', {})
@@ -16,9 +28,17 @@ def login(request):
         username = request.POST["username"]
         password = request.POST["password"]
 
-        if username=='may@ime.br' and password=='123':
+        myRequest = HttpRequest()
+        myRequest.method = 'GET'
+        jsonResponse = views.usuariosApi(myRequest,username)
+        dictResponse = json.loads(jsonResponse.content, object_hook=lambda d: SimpleNamespace(**d))
+        
+        if password == dictResponse.senha:
             return index(request)
-
+        else:
+            messages.error(request,"Usuário e senha não encontrados")
+            return render(request, 'login.html', {})
+            
     return render(request, 'login.html', {})
 
 def index(request):

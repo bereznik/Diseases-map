@@ -4,7 +4,7 @@
 <div class="row d-flex justify-content-center align-items-center">
     <!-- Left Image -->
     <div class="col-md-9 col-lg-6 col-xl-5">
-      <img src="../static/images/login_image.png" class="img-fluid"
+      <img src="/../static/images/login_image.png" class="img-fluid"
         alt="Sample image">
     </div>
 
@@ -15,6 +15,14 @@
           <h2>IDQBRN</h2>
           <h4>Vigilância Epidemiológica</h4>
         </div>
+
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-danger" id="msg" role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
 
         <!-- Email input -->
         <div class="form-outline mt-4">
