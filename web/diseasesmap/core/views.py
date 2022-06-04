@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 
 def dashboard(request):
     return render(request, 'dashboard.html', {})
@@ -9,6 +10,7 @@ def about(request):
 def contact(request):
     return render(request, 'contact.html', {})
 
+@csrf_exempt
 def login(request):
     if request.method == 'POST':
         username = request.POST["username"]
