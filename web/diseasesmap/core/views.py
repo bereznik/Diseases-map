@@ -74,13 +74,13 @@ def usertable(request):
             "email": request.POST['email'],
             "senha": request.POST['senha'],
             "om": request.POST['om'],
-            "foto": "teste"
+            "foto": ""
         }
+        jsonContent = json.loads(json.dumps(dictResponse))
+        print(jsonContent)
 
         try:
-            usuarios_serializer = serializers.UsuariosSerializers(
-                data=json.dumps(dictResponse))
-            print(json.dumps(dictResponse))
+            usuarios_serializer = serializers.UsuariosSerializers(data=jsonContent)
             if usuarios_serializer.is_valid():
                 usuarios_serializer.save()
                 messages.success("Usuário adicionado com sucesso")
