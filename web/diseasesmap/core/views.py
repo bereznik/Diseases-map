@@ -1,7 +1,10 @@
+from django.forms import formset_factory
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpRequest
 from itsdangerous import json
+import pandas as pd
+import mysql.connector as sql
 
 from types import SimpleNamespace
 from django.contrib import messages
@@ -45,13 +48,27 @@ def index(request):
     return render(request, 'index.html', {})
 
 def notifications(request):
+    # db_connection = sql.connect(host='127.0.0.1', database='diseasesmapdb', user='diseasesmapadmin',
+    #                             password='diseasesmap')
+    # dataframe = pd.read_sql('SELECT * FROM server_usuarios', con=db_connection)
+    # dict = dataframe.to_dict('records')
     return render(request, 'notifications.html', {})
 
 def account(request):
     return render(request, 'account.html', {})
 
 def usertable(request):
-    return render(request, 'user_table.html', {})
+    myRequest = HttpRequest()
+    myRequest.method = 'GET'
+    jsonResponse = views.usuariosApi(myRequest)
+    noDictResponseApi = json.loads(jsonResponse.content, object_hook=lambda d: SimpleNamespace(**d))
+    dict = []
+    for namespace in noDictResponseApi:
+        dict.append(vars(namespace))
+    context = {
+        'users' : dict
+    }
+    return render(request, 'user_table.html', context)
 
 def diseases(request):
     return render(request, 'diseases.html', {})

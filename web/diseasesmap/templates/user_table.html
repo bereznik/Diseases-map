@@ -30,36 +30,14 @@
           </tr>
         </thead>
         <tbody id="myTable">
+          {% for user in users %}
           <tr>
-            <th scope="row">Ten</th>
-            <td>André Fernandes</td>
+            <th scope="row">{{user.posto}}</th>
+            <td>{{user.nome}}</td>
             <td><i class="fas fa-edit"></i></td>
             <td><i class="fas fa-trash"></i></td>
           </tr>
-          <tr>
-            <th scope="row">Ten</th>
-            <td>Gustavo Carnevale</td>
-            <td><i class="fas fa-edit"></i></td>
-            <td><i class="fas fa-trash"></i></td>
-          </tr>
-          <tr>
-            <th scope="row">Ten</th>
-            <td>Mayara Ribeiro</td>
-            <td><i class="fas fa-edit"></i></td>
-            <td><i class="fas fa-trash"></i></td>
-          </tr>
-          <tr>
-            <th scope="row">Asp</th>
-            <td>Amanda Lavinsky</td>
-            <td><i class="fas fa-edit"></i></td>
-            <td><i class="fas fa-trash"></i></td>
-          </tr>
-          <tr>
-            <th scope="row">Asp</th>
-            <td>Bernard Reznik</td>
-            <td><i class="fas fa-edit"></i></td>
-            <td><i class="fas fa-trash"></i></td>
-          </tr>
+          {% endfor %}
         </tbody>
       </table>
   </div>
