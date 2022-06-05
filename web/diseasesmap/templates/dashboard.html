@@ -1,5 +1,4 @@
 {% extends "basic_restrict.html" %}
-
 {% block content %}
 <div id="content">
 <div class="container-fluid" style="text-align: justify;">
@@ -42,17 +41,16 @@
           })
       })
   })
-  
+    var coord = [{lat:-22.9068,long:-43.1729,municipio:"Rio de Janeiro",doencas:[{nome:"Dengue",casosTotais:50},{nome:"COVID",casosTotais:120},{nome:"Chicungunha",casosTotais:324}]},{lat:-3.4168,long:-65.8561,municipio:"Apuí",doencas:[{nome:"Chicungunha",casosTotais:100}]}];
+    var list_features = [];
+    for (let i=0;i<coord.length;i++){
+      list_features.push(new ol.Feature({
+                  geometry: new ol.geom.Point(ol.proj.fromLonLat([coord[i]["long"], coord[i]["lat"]]))
+              }));
+    }
     var layer = new ol.layer.Vector({
       source: new ol.source.Vector({
-          features: [
-              new ol.Feature({
-                  geometry: new ol.geom.Point(ol.proj.fromLonLat([-43.1729, -22.9068]))
-              }),
-              new ol.Feature({
-                  geometry: new ol.geom.Point(ol.proj.fromLonLat([-65.8561,-3.4168]))
-              })
-          ]
+          features: list_features
       }),
           style: myStyle
     });
@@ -71,7 +69,7 @@
         }
     });
     map.addOverlay(overlay);
-  
+
     closer.onclick = function() {
         overlay.setPosition(undefined);
         closer.blur();
@@ -81,25 +79,45 @@
     map.on('singleclick', function (event) {
     if (map.hasFeatureAtPixel(event.pixel) === true) {
         var coordinate = event.coordinate;
+        
+        var lonlat = ol.proj.transform(map.getFeaturesAtPixel(event.pixel)[0].getGeometry().getCoordinates(),'EPSG:3857', 'EPSG:4326')
+        var point_long = lonlat[0];
+        var point_lat = lonlat[1];
+        
+        //procurar pelo municipio:
   
-        content.innerHTML = `<table class="table table-light">
-        <thead>
+        for (let i=0;i<coord.length;i++){
+          if(coord[i]['long'] == point_long){
+            var position = i;
+          }
+        }
+
+        var tablerows='';
+        for(let i =0;i<coord[position]["doencas"].length;i++){
+          var nome = coord[position]["doencas"][i]["nome"];
+          var casosTotais= coord[position]["doencas"][i]["casosTotais"];
+          tablerows+="<tr> <th scope='row'>"+nome+"</th>"
+            +"<td>"+casosTotais+"</td>"
+            +"<td>"+coord[position]['municipio']+"</td> </tr>";
+        }
+
+        content.innerHTML = `<table class="table tabl-3.4168e-light">
+        <thead> 
           <tr>
             <th scope="col">Doença</th>
-            <th scope="col">Gravidade</th>
+            <th scope="col">Casos Totais</th>
             <th scope="col">Municipio</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <th scope="row">Dengue</th>
-            <td>Média</td>
-            <td>RJ</td>
-          </tr>
+        <tbody>`
+          +tablerows+`
         </tbody>
-      </table>`;
-  
-        overlay.setPosition(coordinate);
+        </table>`;
+          
+
+      //content.innerHTML = coord[position]["municipio"];
+
+      overlay.setPosition(coordinate);
     } else {
         overlay.setPosition(undefined);
         closer.blur();
