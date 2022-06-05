@@ -3,8 +3,8 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
 
-from server.models import Localidades, Notificacoes, NotificacoesTotal, Doencas, Usuarios
-from server.serializers import LocalidadesSerializers, NotificacoesSerializers, NotificacoesTotalSerializers, DoencasSerializers, UsuariosSerializers
+from server.models import Localidades, Notificacoes, Doencas, Usuarios
+from server.serializers import LocalidadesSerializers, NotificacoesSerializers, DoencasSerializers, UsuariosSerializers
 
 # Create your views here.
 
@@ -57,31 +57,6 @@ def notificacoesApi(request,pathId=0):
     elif request.method=='DELETE':
         notificacao=Notificacoes.objects.get(id=pathId)
         notificacao.delete()
-        return JsonResponse("Deletado com sucesso",safe=False)
-
-def notificacoesTotalApi(request,pathId=0):
-    if request.method=='GET':
-        notificacoesTotal = NotificacoesTotal.objects.all()
-        notificacoesTotal_serializer=NotificacoesTotalSerializers(notificacoesTotal,many=True)
-        return JsonResponse(notificacoesTotal_serializer.data,safe=False)
-    elif request.method=='POST':
-        notificacoesTotal_data=JSONParser().parse(request)
-        notificacoesTotal_serializer=NotificacoesTotalSerializers(data=notificacoesTotal_data)
-        if notificacoesTotal_serializer.is_valid():
-            notificacoesTotal_serializer.save()
-            return JsonResponse("Adicionado com sucesso",safe=False)
-        return JsonResponse("Falha ao adicionar", safe=False)
-    elif request.method=='PUT':
-        notificacoesTotal_data=JSONParser().parse(request)
-        notificacaoTotal=NotificacoesTotal.objects.get(id=notificacoesTotal_data['id'])
-        notificacoesTotal_serializer=NotificacoesTotalSerializers(notificacaoTotal,data=notificacoesTotal_data)
-        if notificacoesTotal_serializer.is_valid():
-            notificacoesTotal_serializer.save()
-            return JsonResponse("Editado com sucesso",safe=False)
-        return JsonResponse("Falha ao editar", safe=False)
-    elif request.method=='DELETE':
-        notificacaoTotal=NotificacoesTotal.objects.get(id=pathId)
-        notificacaoTotal.delete()
         return JsonResponse("Deletado com sucesso",safe=False)
 
 def doencasApi(request,pathId=0):
