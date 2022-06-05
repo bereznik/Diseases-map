@@ -65,8 +65,36 @@ def account(request):
 
 
 def usertable(request):
+    if request.method == 'POST':
+        dictResponse = {
+            "posto": request.POST['posto'],
+            "nome": request.POST['nome'],
+            "nomeguerra": request.POST['nomeguerra'],
+            "email": request.POST['email'],
+            "senha": request.POST['senha'],
+            "om": request.POST['om'],
+            "foto": request.POST['foto']
+        }
+
+        try:
+            views.usuariosApi(json.dumps(dictResponse))
+            messages.success("Usuário adicionado com sucesso")
+        except:
+            messages.error(request, "Falha no cadastro de novo usuário")
     return render(request, 'user_table.html', {})
 
 
 def diseases(request):
+    if request.method == 'POST':
+        dictResponse = {
+            "nome": request.POST['nome'],
+            "vacinadisp": request.POST['vacinadisp'],
+            "descricao": request.POST['descricao'],
+            "link": request.POST['link']
+        }
+        try:
+            views.doencasApi(json.dumps(dictResponse))
+            messages.success("Doença adicionada com sucesso")
+        except:
+            messages.error(request, "Falha no cadastro de nova doença")
     return render(request, 'diseases.html', {})
