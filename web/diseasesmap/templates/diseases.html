@@ -2,251 +2,98 @@
 
 {% block content %}
 <div id="content">
-    <div class="container">
-        <div style="padding-bottom: 10px; text-align:left;">
-            <p class="h1">Descrição das Doenças<br /></p>
-            <p class="p2">
-                Procure alguma doença abaixo:
-            </p>
-        </div>
-        <div class="row">
-            <div class="col-xl">
-                <input class="form-control" id="myInput" type="text" placeholder="Procurar...">
-            </div>
-            <div class="col-">
-                <button type="button" class="btn btn-light" data-toggle="modal" data-target="#add_disease">
-                    <i class="fas fa-plus"></i>
-                    Adicionar Doença
+<div class="container">
+  <div style="padding-bottom: 10px;">
+    <p class="h1">Tabela de Doenças<br/></p>
+    <p class="p2">
+      Procure alguma informacao na tabela:
+    </p>
+  </div>
+  <div class="row">
+    <div class="col-xl">
+      <input class="form-control" id="myInput" type="text" placeholder="Procurar...">
+    </div>
+    <div class="col-">
+      <button type="button" class="btn btn-light" data-toggle="modal" data-target="#add_user">
+          <i class="fas fa-plus"></i>
+          Nova Doença
+      </button>
+    </div>
+  </div>
+    <br>
+    <br>
+    <table class="table table-striped table-bordered table-hover table-condensed">
+        <thead>
+          <tr>
+            <th scope="col">Doença</th>
+            <th scope="col">Descrição</th>
+            <th scope="col">Link</th>
+          </tr>
+        </thead>
+        <tbody id="myTable">
+          <tr>
+            <th scope="row">asdasd</th>
+            <td>asdasd</td>
+            <td>asdasdasd</td>
+            <td><i class="fas fa-edit"></i></td>
+            <td><i class="fas fa-trash"></i></td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+
+  <div class="modal fade" id="add_user" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cadastrar Nova Doença</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-        </div>
-        <br>
-        <br>
-        <div class="overflow-auto">
-            <div class="card-deck">
-                <div class="card">
-                    <img class="card-img-top card-disease-image" src="/../static/images/dengue_card.png">
-                    <div class="card-body">
-                        <h5 class="card-title">Dengue</h5>
-                        <p class="card-text">Essa é uma doença transmitida por um mosquito que se reproduz em água
-                            parada.
-                            A variante hemorrágica tem alta mortalidade.</p>
-                    </div>
-                    <div class="card-footer">
-                        <small class="text-muted">
-                            <button type="button" class="btn btn-light" data-toggle="modal" href="edit_disease.html"
-                                data-target="#edit_disease">
-                                <i class="fas fa-edit"></i>
-                                Editar descrição
-                            </button>
-                        </small>
-                    </div>
-                </div>
-                <div class="card">
-                    <img class="card-img-top card-disease-image" src="/../static/images/chagas_card.png"
-                        alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Doença de Chagas</h5>
-                        <p class="card-text">Essa é uma doença transmitida por um inseto conhecido como barbeiro. Ele
-                            pica as
-                            vítimas e seus excrementos, usualmente depositados ao lado da picada, transmitem a doença.
-                        </p>
-                    </div>
-                    <div class="card-footer">
-                        <small class="text-muted">
-                            <button type="button" class="btn btn-light" data-toggle="modal" href="edit_disease.html"
-                                data-target="#edit_disease_chagas">
-                                <i class="fas fa-edit"></i>
-                                Editar descrição
-                            </button>
-                        </small>
-                    </div>
-                </div>
-                <div class="card">
-                    <img class="card-img-top card-disease-image" src="/../static/images/coqueluche_card.png"
-                        alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Coqueluche</h5>
-                        <p class="card-text">A coqueluche é uma doença que pode se parecer muito com a gripe comum,
-                            porém, é facilmente identificada porque apresenta uma característica própria diferente: a
-                            tosse.</p>
-                    </div>
-                    <div class="card-footer">
-                        <small class="text-muted">
-                            <button type="button" class="btn btn-light" data-toggle="modal" href="edit_disease.html"
-                                data-target="#edit_disease_coqueluche">
-                                <i class="fas fa-edit"></i>
-                                Editar descrição
-                            </button>
-                        </small>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- precisa fazer um negocio com javascript para importar de outro arquivo (o que será feito futuramente), alem de usar um modal base
-        cuja carga dos campos é feito baseado no documento que foi clicado, em vez de existir um para cada um -->
-        <div class="modal fade" id="edit_disease" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Editar doença</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Dengue</label>
-                                <br>
-                                <img class="modal-disease-image" src="/../static/images/dengue_card.png">
-                                <br>
-                                <button type="button" class="btn btn-info">Escolher Nova Imagem</button>
+            <div class="modal-body">
+                <form action="/admin/diseases/" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <label for="nome" class="col-form-label">Nome</label>
+                                <input type="text" id="nome" name="nome" class="form-control form-control-lg" />
                             </div>
-                            <!-- <div class="form-group">
-                            <label for="message-text" class="col-form-label">Nome</label>
-                            <textarea class="form-control modal-text-input" id="message-text">Dengue</textarea>
-                        </div> -->
-                            <div class="form-group">
-                                <label for="message-text" class="col-form-label">Descrição</label>
-                                <textarea class="form-control modal-text-input" id="message-text">Essa é uma doença transmitida por um mosquito que se reproduz em água parada.
-                            A variante hemorrágica tem alta mortalidade.</textarea>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-warning" data-dismiss="modal">Voltar</button>
-                        <!-- <button type="button" class="btn btn-danger">Remover</button> -->
-                        <button type="button" class="btn btn-success">Atualizar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="edit_disease_chagas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Editar doença</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Doença de Chagas</label>
-                                <br>
-                                <img class="modal-disease-image" src="/../static/images/chagas_card.png">
-                                <br>
-                                <button type="button" class="btn btn-info">Escolher Nova Imagem</button>
-                            </div>
-                            <!-- <div class="form-group">
-                            <label for="message-text" class="col-form-label">Nome</label>
-                            <textarea class="form-control modal-text-input" id="message-text">Dengue</textarea>
-                        </div> -->
-                            <div class="form-group">
-                                <label for="message-text" class="col-form-label">Descrição</label>
-                                <textarea class="form-control modal-text-input" id="message-text">Essa é uma doença transmitida por um inseto conhecido como barbeiro. Ele pica as
-                            vítimas e seus excrementos, usualmente depositados ao lado da picada, transmitem a doença.
-                        </textarea>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-warning" data-dismiss="modal">Voltar</button>
-                        <!-- <button type="button" class="btn btn-danger">Remover</button> -->
-                        <button type="button" class="btn btn-success">Atualizar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="edit_disease_coqueluche" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Editar doença</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Coqueluche</label>
-                                <br>
-                                <img class="modal-disease-image" src="/../static/images/coqueluche_card.png">
-                                <br>
-                                <button type="button" class="btn btn-info">Escolher Nova Imagem</button>
-                            </div>
-                            <!-- <div class="form-group">
-                            <label for="message-text" class="col-form-label">Nome</label>
-                            <textarea class="form-control modal-text-input" id="message-text">Dengue</textarea>
-                        </div> -->
-                            <div class="form-group">
-                                <label for="message-text" class="col-form-label">Descrição</label>
-                                <textarea class="form-control modal-text-input"
-                                    id="message-text">A coqueluche é uma doença que pode se parecer muito com a gripe comum, porém,
-                             é facilmente identificada porque apresenta uma característica própria diferente: a tosse.</textarea>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-warning" data-dismiss="modal">Voltar</button>
-                        <!-- <button type="button" class="btn btn-danger">Remover</button> -->
-                        <button type="button" class="btn btn-success">Atualizar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="add_disease" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Cadastrar Novo Usuário</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="/admin/diseases/" method="post">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col">
-                                        <label for="nome" class="col-form-label">Nome</label>
-                                        <input type="text" id="nome" name="nome" class="form-control form-control-lg" />
-                                    </div>
-                                    <div class="col">
-                                        <label for="vacinadisp" class="col-form-label">Vacina Disponível</label>
-                                        <input type="checkbox" id="vacinadisp" name="vacinadisp"
-                                            class="form-control form-control-lg" />
-                                    </div>
-                                </div>
-                                <label for="descricao" class="col-form-label">Descrição</label>
-                                <input type="text" id="descricao" name="descricao"
+                            <div class="col">
+                                <label for="vacinadisp" class="col-form-label">Vacina Disponível</label>
+                                <input type="checkbox" id="vacinadisp" name="vacinadisp"
                                     class="form-control form-control-lg" />
+                            </div>
+                        </div>
+                        <label for="descricao" class="col-form-label">Descrição</label>
+                        <input type="text" id="descricao" name="descricao"
+                            class="form-control form-control-lg" />
 
-                                <label for="link" class="col-form-label">Link</label>
-                                <input type="text" id="link" name="link" class="form-control form-control-lg" />
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-warning" data-dismiss="modal">Voltar</button>
-                                <!-- <button type="button" class="btn btn-danger">Remover</button> -->
-                                <button method="post" class="btn btn-success">Atualizar</button>
-                            </div>
-                        </form>
+                        <label for="link" class="col-form-label">Link</label>
+                        <input type="text" id="link" name="link" class="form-control form-control-lg" />
                     </div>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">Voltar</button>
+                        <!-- <button type="button" class="btn btn-danger">Remover</button> -->
+                        <button method="post" class="btn btn-success">Atualizar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
-{% endblock %}
+  
+  <script>
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+    </script>
+  
+  {% endblock %}
+  
