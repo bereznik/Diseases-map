@@ -59,6 +59,7 @@ def notificacoesApi(request,pathId=0):
         notificacao.delete()
         return JsonResponse("Deletado com sucesso",safe=False)
 
+@csrf_exempt
 def doencasApi(request,pathId=0):
     if request.method=='GET':
         doencas = Doencas.objects.all()

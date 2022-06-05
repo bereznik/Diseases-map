@@ -1,0 +1,106 @@
+[
+{
+    "nome":"BOTULISMO",
+    "descricao":"Indisponivel",
+    "vacinadisp": false,
+    "link":"Indisponivel"
+},
+
+{
+    "nome":"LEISHMANIOSE VISCERAL",
+    "descricao":"Indisponivel",
+    "vacinadisp": false,
+    "link":"Indisponivel"
+},
+
+{
+    "nome":"LEISHMANIOSE TEGUMENTAR",
+    "descricao":"Indisponivel",
+    "vacinadisp": false,
+    "link":"Indisponivel"
+},
+
+{
+    "nome":"FEBRE AMARELA",
+    "descricao":"Indisponivel",
+    "vacinadisp": false,
+    "link":"Indisponivel"
+},
+
+{
+    "nome":"DENGUE",
+    "descricao":"Indisponivel",
+    "vacinadisp": false,
+    "link":"Indisponivel"
+},
+
+{
+    "nome":"HEPATITE VIRAL",
+    "descricao":"Indisponivel",
+    "vacinadisp": false,
+    "link":"Indisponivel"
+},
+
+{
+    "nome":"FEBRE MACULOSA",
+    "descricao":"Indisponivel",
+    "vacinadisp": false,
+    "link":"Indisponivel"
+},
+
+{
+    "nome":"LEPTOSPIROSE",
+    "descricao":"Indisponivel",
+    "vacinadisp":false,
+    "link":"Indisponivel"
+},
+
+{
+    "nome":"DOENÇA DE CHAGAS",
+    "descricao":"Indisponivel",
+    "vacinadisp": false,
+    "link":"Indisponivel"
+},
+
+{
+    "nome":"PICADAS DE COBRAS",
+    "descricao":"Indisponivel",
+    "vacinadisp": false,
+    "link":"Indisponivel"
+},
+
+{
+    "nome":"ZIKA VIRUS",
+    "descricao":"Indisponivel",
+    "vacinadisp": false,
+    "link":"Indisponivel"
+},
+
+{
+    "nome":"FEBRE TIFOIDE",
+    "descricao":"Indisponivel",
+    "vacinadisp": false,
+    "link":"Indisponivel"
+},
+
+{
+    "nome":"HANTAVIROSE",
+    "descricao":"Indisponivel",
+    "vacinadisp": false,
+    "link":"Indisponivel"
+},
+
+{
+    "nome":"MENINGITE",
+    "descricao":"Indisponivel",
+    "vacinadisp": false,
+    "link":"Indisponivel"
+},
+
+{
+    "nome":"RAIVA",
+    "descricao":"Indisponivel",
+    "vacinadisp": false,
+    "link":"Indisponivel"
+}
+]

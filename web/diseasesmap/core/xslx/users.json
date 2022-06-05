@@ -1,0 +1,20 @@
+[
+	{
+		"posto": "ASP",
+		"nome": "Bernard Reznik",
+		"nomeguerra": "Reznik",
+		"email": "rezna@eb.br",
+		"senha": "12345",
+		"om": "IME",
+		"foto": ""
+},
+{
+		"posto": "TEN",
+		"nome": "Andre Fernandes",
+		"nomeguerra": "Fernandes",
+		"email": "fer@eb.br",
+		"senha": "12345",
+		"om": "IME",
+		"foto": ""
+	}
+]

@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from .views import account, diseases, index,login,dashboard,about,contact, notifications, usertable, about_restrict, contact_restrict
+from .views import account, diseases, index,login,dashboard,about,contact, notifications, populate, usertable, about_restrict, contact_restrict
 
 urlpatterns = [
     path('django/', admin.site.urls),
@@ -30,5 +30,8 @@ urlpatterns = [
     path('admin/account/', account),
     path('admin/usertable/', usertable),
     path('admin/diseases/', diseases),
-    path('db/',include('server.urls'))
+    path('db/',include('server.urls')),
+
+    #DANGEROUS PATH
+    path('admin/db/populate', populate)
 ]

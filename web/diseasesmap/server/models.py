@@ -1,23 +1,24 @@
+from tkinter.tix import Tree
 from django.db import models
 
 # Create your models here.
 class Localidades(models.Model):
     id = models.IntegerField(primary_key=True)
+    nome =  models.CharField(max_length=100)
     estado =  models.CharField(max_length=100)
-    cidade =  models.CharField(max_length=100)
+    regiao =  models.CharField(max_length=100)
     latitude = models.FloatField(default=0)
     longitude = models.FloatField(default=0)
 
 class Notificacoes(models.Model):
     id = models.AutoField(primary_key=True)
-    idmunicipio = models.IntegerField()
-    iddoenca = models.IntegerField()
+    idmunicipio = models.ForeignKey('Localidades', on_delete=models.SET_NULL,null=True)
+    nomedoenca = models.ForeignKey('Doencas', on_delete=models.SET_NULL,null=True)
     casos = models.IntegerField()
 
 class Doencas(models.Model):
-    id = models.AutoField(primary_key=True)
-    nome = models.CharField(max_length=100)
-    descricao =  models.CharField(max_length=500)
+    nome = models.CharField(max_length=50,primary_key=True)
+    descricao =  models.CharField(max_length=500,default="Indisponivel")
     vacinadisp =  models.BooleanField(default=False)
     link = models.CharField(max_length=100)
 
