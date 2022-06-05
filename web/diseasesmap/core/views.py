@@ -128,7 +128,17 @@ def diseases(request):
             messages.success("Doença adicionada com sucesso")
         except:
             messages.error(request, "Falha no cadastro de nova doença")
-    return render(request, 'diseases.html', {})
+    myRequest = HttpRequest()
+    myRequest.method = 'GET'
+    jsonResponse = views.doencasApi(myRequest)
+    noDictResponseApi = json.loads(jsonResponse.content, object_hook=lambda d: SimpleNamespace(**d))
+    dict = []
+    for namespace in noDictResponseApi:
+        dict.append(vars(namespace))
+    context = {
+        'diseases' : dict
+    }
+    return render(request, 'diseases.html', context)
 
 def populate(request):
     # usersFile = open(os.path.realpath(os.path.join(os.path.dirname(__file__), 'xslx', 'users.json')))

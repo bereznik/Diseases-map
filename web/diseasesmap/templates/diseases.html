@@ -31,12 +31,14 @@
           </tr>
         </thead>
         <tbody id="myTable">
+          {% for disease in diseases%}
           <tr>
-            <th scope="row">asdasd</th>
-            <td>asdasd</td>
-            <td>asdasdasd</td>
+            <th scope="row"> {{disease.nome}}</th>
+            <td>{{disease.descricao}}</td>
+            <td>{{disease.link}}</td>
             <td><i class="fas fa-edit"></i></td>
             <td><i class="fas fa-trash"></i></td>
+            {% endfor %}
           </tr>
         </tbody>
       </table>
