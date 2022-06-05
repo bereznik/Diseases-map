@@ -5,7 +5,7 @@ import json
 
 from types import SimpleNamespace
 from django.contrib import messages
-from server import views
+from server import views, serializers
 
 
 def dashboard(request):
@@ -64,6 +64,7 @@ def account(request):
     return render(request, 'account.html', {})
 
 
+@csrf_exempt
 def usertable(request):
     if request.method == 'POST':
         dictResponse = {
@@ -73,12 +74,18 @@ def usertable(request):
             "email": request.POST['email'],
             "senha": request.POST['senha'],
             "om": request.POST['om'],
-            "foto": request.POST['foto']
+            "foto": "teste"
         }
 
         try:
-            views.usuariosApi(json.dumps(dictResponse))
-            messages.success("Usuário adicionado com sucesso")
+            usuarios_serializer = serializers.UsuariosSerializers(
+                data=json.dumps(dictResponse))
+            print(json.dumps(dictResponse))
+            if usuarios_serializer.is_valid():
+                usuarios_serializer.save()
+                messages.success("Usuário adicionado com sucesso")
+            else:
+                print("ERRO")
         except:
             messages.error(request, "Falha no cadastro de novo usuário")
     return render(request, 'user_table.html', {})
