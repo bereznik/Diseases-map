@@ -61,11 +61,17 @@ def index(request):
 
 
 def notifications(request):
-    # db_connection = sql.connect(host='127.0.0.1', database='diseasesmapdb', user='diseasesmapadmin',
-    #                             password='diseasesmap')
-    # dataframe = pd.read_sql('SELECT * FROM server_usuarios', con=db_connection)
-    # dict = dataframe.to_dict('records')
-    return render(request, 'notifications.html', {})
+    db_connection = sql.connect(host='127.0.0.1', database='diseasesmapdb', user='diseasesmapadmin',
+                                password='diseasesmap')
+    dataframe = pd.read_sql('select l.cidade, d.nome, nt.casos from ' +
+                            '(( server_notificacoestotal as nt join server_doencas as d ' +
+                            'on (nt.iddoenca = d.id))' +
+                            'join server_localidades as l on (l.id = nt.idmunicipio))', con=db_connection)
+    notificacoes = dataframe.to_dict('records')
+    context = {
+        'notificacoes': notificacoes
+    }
+    return render(request, 'notifications.html', context)
 
 
 def account(request):

@@ -31,31 +31,15 @@
         </tr>
       </thead>
       <tbody id="myTable">
+        {% for notificacao in notificacoes %}
         <tr>
-          <th scope="row">Rio de Janeiro</th>
-          <td>Dengue</td>
-          <td>116</td>
+          <th scope="row">{{notificacao.cidade}}</th>
+          <td>{{notificacao.nome}}</td>
+          <td>{{notificacao.casos}}</td>
+          <td><i class="fas fa-edit"></i></td>
+          <td><i class="fas fa-trash"></i></td>
         </tr>
-        <tr>
-          <th scope="row">Manaus</th>
-          <td>Chagas</td>
-          <td>20</td>
-        </tr>
-        <tr>
-          <th scope="row">Manaus</th>
-          <td>Poliomelite</td>
-          <td>10</td>
-        </tr>
-        <tr>
-          <th scope="row">Belém</th>
-          <td>Chagas</td>
-          <td>15</td>
-        </tr>
-        <tr>
-          <th scope="row">Belém</th>
-          <td>Vilitela</td>
-          <td>10</td>
-        </tr>
+        {% endfor %}
       </tbody>
     </table>
   </div>
