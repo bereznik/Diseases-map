@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from server.models import Localidades,Notificacoes,NotificacoesTotal,Doencas,Usuarios
+from server.models import Localidades,Notificacoes,Doencas,Usuarios
 
 class LocalidadesSerializers(serializers.ModelSerializer):
     class Meta:
@@ -9,11 +9,6 @@ class LocalidadesSerializers(serializers.ModelSerializer):
 class NotificacoesSerializers(serializers.ModelSerializer):
     class Meta:
         model=Notificacoes
-        fields=('id','idmunicipio','iddoenca','data')
-
-class NotificacoesTotalSerializers(serializers.ModelSerializer):
-    class Meta:
-        model=NotificacoesTotal
         fields=('id','idmunicipio','iddoenca','casos')
 
 class DoencasSerializers(serializers.ModelSerializer):

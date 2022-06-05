@@ -12,12 +12,6 @@ class Notificacoes(models.Model):
     id = models.AutoField(primary_key=True)
     idmunicipio = models.IntegerField()
     iddoenca = models.IntegerField()
-    data = models.DateField(default=None)
-
-class NotificacoesTotal(models.Model):
-    id = models.AutoField(primary_key=True)
-    idmunicipio = models.IntegerField()
-    iddoenca = models.IntegerField()
     casos = models.IntegerField()
 
 class Doencas(models.Model):
