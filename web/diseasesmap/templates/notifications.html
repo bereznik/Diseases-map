@@ -2,34 +2,32 @@
 
 {% block content %}
 <div id="content">
-<div class="container">
-  <div style="padding-bottom: 10px;">
-    <p class="h1">Tabela de Notificações<br/></p>
-    <p class="p2">
-      Procure alguma informacao na tabela:
-    </p>
-  </div>
-  <div class="row">
-    <div class="col-xl">
-      <input class="form-control" id="myInput" type="text" placeholder="Procurar...">
+  <div class="container">
+    <div style="padding-bottom: 10px;">
+      <p class="h1">Tabela de Notificações<br /></p>
+      <p class="p2">
+        Procure alguma informacao na tabela:
+      </p>
     </div>
-    <div class="col-">
-      <button type="button" class="btn btn-light" data-toggle="modal" href="edit_disease.html"
-          data-target="#edit_disease_chagas">
+    <div class="row">
+      <div class="col-xl">
+        <input class="form-control" id="myInput" type="text" placeholder="Procurar...">
+      </div>
+      <div class="col-">
+        <button type="button" class="btn btn-light" data-toggle="modal" data-target="#add_notification">
           <i class="fas fa-plus"></i>
           Inserir Notificação
-      </button>
+        </button>
+      </div>
     </div>
-  </div>
-  <br>
-  <br>
-  <table class="table table-striped table-bordered table-hover table-condensed">
+    <br>
+    <br>
+    <table class="table table-striped table-bordered table-hover table-condensed">
       <thead>
         <tr>
           <th scope="col">Localidade</th>
           <th scope="col">Doença</th>
           <th scope="col">Casos</th>
-          <th scope="col">Óbitos</th>
         </tr>
       </thead>
       <tbody id="myTable">
@@ -37,55 +35,78 @@
           <th scope="row">Rio de Janeiro</th>
           <td>Dengue</td>
           <td>116</td>
-          <td>30</td>
-          <td><i class="fas fa-edit"></i></td>
-          <td><i class="fas fa-trash"></i></td>
         </tr>
         <tr>
           <th scope="row">Manaus</th>
           <td>Chagas</td>
           <td>20</td>
-          <td>4</td>
-          <td><i class="fas fa-edit"></i></td>
-          <td><i class="fas fa-trash"></i></td>
         </tr>
         <tr>
           <th scope="row">Manaus</th>
           <td>Poliomelite</td>
           <td>10</td>
-          <td>0</td>
-          <td><i class="fas fa-edit"></i></td>
-          <td><i class="fas fa-trash"></i></td>
         </tr>
         <tr>
           <th scope="row">Belém</th>
           <td>Chagas</td>
           <td>15</td>
-          <td>0</td>
-          <td><i class="fas fa-edit"></i></td>
-          <td><i class="fas fa-trash"></i></td>
         </tr>
         <tr>
           <th scope="row">Belém</th>
           <td>Vilitela</td>
           <td>10</td>
-          <td>5</td>
-          <td><i class="fas fa-edit"></i></td>
-          <td><i class="fas fa-trash"></i></td>
         </tr>
       </tbody>
     </table>
-</div>
+  </div>
+
+  <div class="modal fade" id="add_notification" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Cadastrar Nova Notificação</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="/admin/notifications/" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+              <div class="row">
+                <div class="col">
+                  <label for="idmunicipio" class="col-form-label">Localidade</label>
+                  <input type="text" id="idmunicipio" name="idmunicipio" class="form-control form-control-lg" />
+                </div>
+                <div class="col">
+                  <label for="casos" class="col-form-label">Número de Casos</label>
+                  <input type="number" id="casos" name="casos" class="form-control form-control-lg" />
+                </div>
+              </div>
+              <label for="iddoenca" class="col-form-label">Doença</label>
+              <input type="text" id="iddoenca" name="iddoenca" class="form-control form-control-lg" />
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-warning" data-dismiss="modal">Voltar</button>
+              <!-- <button type="button" class="btn btn-danger">Remover</button> -->
+              <button method="post" class="btn btn-success">Atualizar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-  $(document).ready(function(){
-    $("#myInput").on("keyup", function() {
+  $(document).ready(function () {
+    $("#myInput").on("keyup", function () {
       var value = $(this).val().toLowerCase();
-      $("#myTable tr").filter(function() {
+      $("#myTable tr").filter(function () {
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
       });
     });
   });
-  </script>
+</script>
 {% endblock %}
