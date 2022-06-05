@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpRequest
-import json
+import json, os
 
 from types import SimpleNamespace
 from django.contrib import messages
@@ -105,3 +105,36 @@ def diseases(request):
         except:
             messages.error(request, "Falha no cadastro de nova doença")
     return render(request, 'diseases.html', {})
+
+def populate(request):
+    # usersFile = open(os.path.realpath(os.path.join(os.path.dirname(__file__), 'xslx', 'users.json')))
+    # users = json.load(usersFile)
+    # for user in users:
+    #     print(user)
+    #     usuarios_serializer=serializers.UsuariosSerializers(data=user)
+    #     if usuarios_serializer.is_valid():
+    #         usuarios_serializer.save()
+
+    # localidadesFile = open(os.path.realpath(os.path.join(os.path.dirname(__file__), 'xslx', 'localidades.json')))
+    # localidades = json.load(localidadesFile)
+    # for localidade in localidades:
+    #     print(localidade)
+    #     localidades_serializer=serializers.LocalidadesSerializers(data=localidade)
+    #     if localidades_serializer.is_valid():
+    #         localidades_serializer.save()
+    #     else:
+    #         print("ERRO")
+    #         return render(request, 'populate.html', {})
+   
+    # doencasFile = open(os.path.realpath(os.path.join(os.path.dirname(__file__), 'xslx', 'doencas.json')))
+    # doencas = json.load(doencasFile)
+    # for doenca in doencas:
+    #     print(doenca)
+    #     doencas_serializer=serializers.DoencasSerializers(data=doenca)
+    #     if doencas_serializer.is_valid():
+    #         doencas_serializer.save()
+    #     else:
+    #         print("ERRO")
+    #         return render(request, 'populate.html', {})
+
+    return render(request, 'populate.html', {})
