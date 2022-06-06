@@ -46,8 +46,8 @@
         <div class="pagination">
             <span class="step-links">
                 {% if diseases.has_previous %}
-                <a href="?page=1">&laquo;</a>
-                <a href="?page={{ diseases.previous_page_number }}"></a>
+                <a href="?page=1"></a>
+                <a href="?page={{ diseases.previous_page_number }}">&laquo;</a>
                 {% endif %}
 
                 <span class="current">
@@ -55,7 +55,7 @@
                 </span>
 
                 {% if diseases.has_next %}
-                <a href="?page={{ diseases.next_page_number }}"></a>
+                <a href="?page={{ diseases.next_page_number }}">&raquo;</a>
                 <a href="?page={{ diseases.paginator.num_pages }}"></a>
                 {% endif %}
             </span>

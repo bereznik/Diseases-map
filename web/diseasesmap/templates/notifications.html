@@ -44,8 +44,8 @@
     <div class="pagination">
       <span class="step-links">
         {% if notifications.has_previous %}
-        <a href="?page=1">&laquo;</a>
-        <a href="?page={{ notifications.previous_page_number }}"></a>
+        <a href="?page=1"></a>
+        <a href="?page={{ notifications.previous_page_number }}">&laquo;</a>
         {% endif %}
 
         <span class="current">
@@ -53,8 +53,8 @@
         </span>
 
         {% if notifications.has_next %}
-        <a href="?page={{ notifications.next_page_number }}"></a>
-        <a href="?page={{ notifications.paginator.num_pages }}">&raquo;</a>
+        <a href="?page={{ notifications.next_page_number }}">&raquo;</a>
+        <a href="?page={{ notifications.paginator.num_pages }}"></a>
         {% endif %}
       </span>
     </div>
