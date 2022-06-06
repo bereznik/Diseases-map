@@ -2,10 +2,6 @@ from django.forms import formset_factory
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpRequest
-<<<<<<< HEAD
-import json, os
-import pandas as pd
-=======
 from django.core.paginator import Paginator
 
 from cmath import exp
@@ -13,10 +9,9 @@ from distutils.log import error
 import json
 import os
 import pandas as pd
-import mysql.connector as sql
+#import mysql.connector as sql
 
 
->>>>>>> fba550197896c91baa7dd1d03b35737aa70a9f18
 from types import SimpleNamespace
 from django.contrib import messages
 from server import views, serializers
