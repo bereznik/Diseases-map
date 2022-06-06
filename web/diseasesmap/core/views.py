@@ -19,10 +19,11 @@ from server import views, serializers
 from server.models import Notificacoes, Doencas, Usuarios
 
 def authorization(request):
+    username = request.COOKIES.get('user')
+    print(username)
     try:
         myRequest = HttpRequest()
         myRequest.method = 'GET'
-        username = request.COOKIES.get('user')
         jsonResponse = views.usuariosApi(myRequest, username, 0)
         print(jsonResponse)
         dictResponse = json.loads(jsonResponse.content, object_hook=lambda d: SimpleNamespace(**d))
@@ -51,12 +52,12 @@ def contact_restrict(request):
 
 
 def about(request):
-    myUser = authorization(request)
-    if myUser!=error:
-        context = {
-            'myUser': myUser
-        }
-        return render(request, 'about.html', context)
+    # myUser = authorization(request)
+    # if myUser!=error:
+    #     context = {
+    #         'myUser': myUser
+    #     }
+    #     return render(request, 'about.html', context)
     return render(request, 'about.html')
 
 def contact(request):
@@ -177,11 +178,11 @@ def notifications(request,pathId=0):
 
 
 def account(request):
-    # myUser = authorization(request)
-    # if myUser==error:
-    #     return login(request)
+    myUser = authorization(request)
+    if myUser==error:
+        return login(request)
     context = {
-        #'myUser': myUser
+        'myUser': myUser
     }
     return render(request, 'account.html', context)
 

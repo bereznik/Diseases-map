@@ -99,14 +99,17 @@ def doencasApi(request,pathId=0):
 def usuariosApi(request,email=0,pathId=0):
     if request.method=='GET':
         if pathId!=0:
+            print("aqui3")
             usuario=Usuarios.objects.get(id=pathId)
             usuarios_serializer=UsuariosSerializers(usuario)
             return JsonResponse(usuarios_serializer.data,safe=False)
         elif email==0:
+            print("aqui2")
             usuarios = Usuarios.objects.all()
             usuarios_serializer=UsuariosSerializers(usuarios,many=True)
             return JsonResponse(usuarios_serializer.data,safe=False)
         else:
+            print("aqui")
             usuario=Usuarios.objects.get(email=email)
             usuarios_serializer=UsuariosSerializers(usuario)
             return JsonResponse(usuarios_serializer.data,safe=False)
