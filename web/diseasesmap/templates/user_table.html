@@ -35,11 +35,18 @@
         {% for user in users %}
         <tr>
           <th scope="row">{{user.posto}}</th>
-          <td>{{user.nome}}</td>
+          <td>{{user.nomeguerra}}</td>
           <td>{{user.email}}</td>
           <td>{{user.om}}</td>
-          <td><i class="fas fa-edit"></i></td>
-          <td><i class="fas fa-trash"></i></td>
+          <td>
+            <form action="/admin/usertable/{{user.id}}/" method="get">
+              <button type="submit" class="btn btn-sm"><i class="fas fa-edit" ></i></button>
+            </form>
+          </td>
+          <td>
+            <form action="/admin/usertable/{{user.id}}/" method="post">
+              <button type="submit" class="btn btn-sm"><i class="fas fa-trash" ></i></button>
+            </form>
         </tr>
         {% endfor %}
       </tbody>

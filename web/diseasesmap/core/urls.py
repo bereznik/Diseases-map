@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path,include,re_path
 from .views import account, diseases, index,login,dashboard,about,contact, notifications, populate, usertable, about_restrict, contact_restrict
 
 urlpatterns = [
@@ -29,6 +29,7 @@ urlpatterns = [
     path('admin/notifications/', notifications),
     path('admin/account/', account),
     path('admin/usertable/', usertable),
+    re_path(r'^admin/usertable/(?P<pathId>[/\w]+)/$', usertable),
     path('admin/diseases/', diseases),
     path('db/',include('server.urls')),
 
