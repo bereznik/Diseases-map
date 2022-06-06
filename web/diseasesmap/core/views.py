@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpRequest
 from django.core.paginator import Paginator
+from rest_framework.parsers import JSONParser
 
 from cmath import exp
 from distutils.log import error
@@ -15,19 +16,18 @@ import mysql.connector as sql
 from types import SimpleNamespace
 from django.contrib import messages
 from server import views, serializers
-from server.models import Localidades, Notificacoes, Doencas, Usuarios
+from server.models import Notificacoes, Doencas, Usuarios
 
 def authorization(request):
     try:
         myRequest = HttpRequest()
         myRequest.method = 'GET'
         username = request.COOKIES.get('user')
-        jsonResponse = views.usuariosApi(myRequest, username)
+        jsonResponse = views.usuariosApi(myRequest, username, 0)
         print(jsonResponse)
         dictResponse = json.loads(jsonResponse.content, object_hook=lambda d: SimpleNamespace(**d))
         return dictResponse
     except:
-        print("aqui")
         return error
 
 
@@ -35,8 +35,6 @@ def logout(request):
     response = login(request)
     response.set_cookie("user","")
     return response
-
-
 
 def dashboard(request):
     json = get_notifications()
@@ -54,19 +52,19 @@ def contact_restrict(request):
 
 def about(request):
     myUser = authorization(request)
-    if myUser==error:
-        return login(request)
-    context = {
-        'myUser': myUser
-    }
-    return render(request, 'about.html', context)
+    if myUser!=error:
+        context = {
+            'myUser': myUser
+        }
+        return render(request, 'about.html', context)
+    return render(request, 'about.html')
 
 def contact(request):
-    myUser = authorization(request)
-    if myUser==error:
-        return login(request)
+    # myUser = authorization(request)
+    # if myUser==error:
+    #     return login(request)
     context = {
-        'myUser': myUser
+        #'myUser': myUser
     }
     return render(request, 'contact.html', context)
 
@@ -97,9 +95,9 @@ def login(request):
 
 
 def index(request):
-    myUser = authorization(request)
-    if myUser==error:
-        return login(request)
+    # myUser = authorization(request)
+    # if myUser==error:
+    #     return login(request)
 
     jsonNotifications = get_notifications()
     
@@ -113,7 +111,7 @@ def index(request):
 
     context = {
         'diseases': dict,
-        'myUser': myUser,
+        #'myUser': myUser,
         'chave': jsonNotifications
     }
     return render(request, 'index.html', context)
@@ -122,9 +120,9 @@ def index(request):
 
 @csrf_exempt
 def notifications(request,pathId=0):
-    myUser = authorization(request)
-    if myUser==error:
-        return login(request)
+    # myUser = authorization(request)
+    # if myUser==error:
+    #     return login(request)
 
     db_connection = sql.connect(host='127.0.0.1', database='diseasesmapdb', user='diseasesmapadmin',
                                 password='diseasesmap')
@@ -133,9 +131,8 @@ def notifications(request,pathId=0):
             try:
                 notificacao = Notificacoes.objects.get(id=pathId)
                 notificacao.delete()
-                messages.success("Notificacao removida com sucesso")
             except:
-                messages.error(request, "Falha na remocao de notificacao")
+                error
         else:
             casos = request.POST['casos']
             nomedoenca_id = request.POST['nomedoenca_id']
@@ -157,9 +154,8 @@ def notifications(request,pathId=0):
                     data=jsonContent)
                 if notifications_serializer.is_valid():
                     notifications_serializer.save()
-                    messages.success("Notificação adicionada com sucesso")
             except:
-                messages.error(request, "Falha no cadastro de nova notificação")
+                error
 
     myRequest = HttpRequest()
     myRequest.method = 'GET'
@@ -174,36 +170,75 @@ def notifications(request,pathId=0):
 
     context = {
         'notifications': notifications,
-        'myUser': myUser
+        ##'myUser': myUser
     }
 
     return render(request, 'notifications.html', context)
 
 
 def account(request):
-    myUser = authorization(request)
-    if myUser==error:
-        return login(request)
+    # myUser = authorization(request)
+    # if myUser==error:
+    #     return login(request)
     context = {
-        'myUser': myUser
+        #'myUser': myUser
     }
     return render(request, 'account.html', context)
 
 @csrf_exempt
+def user_edit(request,pathId=0):
+    if request.method == 'POST':
+        dictResponse = {
+                "posto": request.POST['posto'],
+                "nome": request.POST['nome'],
+                "nomeguerra": request.POST['nomeguerra'],
+                "email": request.POST['email'],
+                "senha": request.POST['senha'],
+                "om": request.POST['om'],
+                "foto": ""
+        }
+        jsonContent = json.loads(json.dumps(dictResponse))
+        usuarios=Usuarios.objects.get(id=pathId)
+        usuarios_serializer=serializers.UsuariosSerializers(usuarios,data=jsonContent)
+        if usuarios_serializer.is_valid():
+            usuarios_serializer.save()
+        else:
+            print("erroaqui")
+        return usertable(HttpRequest())
+
+    if pathId!=0:
+        myRequest = HttpRequest()
+        myRequest.method = 'GET'
+
+        try:
+            jsonResponse = views.usuariosApi(myRequest, 0, pathId)
+            dictResponse = json.loads(jsonResponse.content, object_hook=lambda d: SimpleNamespace(**d))
+        except:
+            error
+
+        context = {
+            'user': dictResponse
+        }
+        return render(request, 'user_edit.html',context)
+
+    return render(request, 'user_edit.html')
+
+
+@csrf_exempt
 def usertable(request, pathId=0):
-    myUser = authorization(request)
-    if myUser==error:
-        return login(request)
+    # myUser = authorization(request)
+    # if myUser==error:
+    #     return login(request)
 
     if request.method == 'POST':
         if pathId != 0:
             try:
                 usuario = Usuarios.objects.get(id=pathId)
                 usuario.delete()
-                messages.success("Usuário removido com sucesso")
+                error
                 usertable(HttpRequest())
             except:
-                messages.error(request, "Falha na remocao de novo usuário")
+                error
                 usertable(HttpRequest())
         else:
             dictResponse = {
@@ -222,10 +257,9 @@ def usertable(request, pathId=0):
                     data=jsonContent)
                 if usuarios_serializer.is_valid():
                     usuarios_serializer.save()
-                    messages.success("Usuário adicionado com sucesso")
                     usertable(HttpRequest())
             except:
-                messages.error(request, "Falha no cadastro de novo usuário")
+                error
                 usertable(HttpRequest())
 
     myRequest = HttpRequest()
@@ -242,26 +276,60 @@ def usertable(request, pathId=0):
 
     context = {
         'users': users,
-        'myUser': myUser
+        #'myUser': myUser
     }
 
     return render(request, 'user_table.html', context)
 
+@csrf_exempt
+def disease_edit(request,pathId=0):
+    if request.method == 'POST':
+        print("resposta vacina disp:::",request.POST['vacinadisp'])
+        dictResponse = {
+            "nome": request.POST['nome'],
+            "vacinadisp": (request.POST['vacinadisp']=="on"),
+            "descricao": request.POST['descricao'],
+            "link": request.POST['link']
+        }
+        jsonContent = json.loads(json.dumps(dictResponse))
+        doenca=Doencas.objects.get(nome=pathId)
+        doencas_serializer=serializers.DoencasSerializers(doenca,data=jsonContent)
+        if doencas_serializer.is_valid():
+            doencas_serializer.save()
+        else:
+            print("erroaqui")
+        return diseases(HttpRequest())
+
+    if pathId!=0:
+        myRequest = HttpRequest()
+        myRequest.method = 'GET'
+
+        try:
+            jsonResponse = views.doencasApi(myRequest, pathId)
+            dictResponse = json.loads(jsonResponse.content, object_hook=lambda d: SimpleNamespace(**d))
+        except:
+            error
+
+        context = {
+            'disease': dictResponse
+        }
+        return render(request, 'disease_edit.html',context)
+
+    return render(request, 'disease_edit.html')
 
 @csrf_exempt
 def diseases(request,pathId=0):
-    myUser = authorization(request)
-    if myUser==error:
-        return login(request)
+    # myUser = authorization(request)
+    # if myUser==error:
+    #     return login(request)
 
     if request.method == 'POST':
         if pathId != 0:
             try:
                 doenca = Doencas.objects.get(nome=pathId)
                 doenca.delete()
-                messages.success("Doença removido com sucesso")
             except:
-                messages.error(request, "Falha na remocao de novo doença")
+                error
         else:
             dictResponse = {
                 "nome": request.POST['nome'],
@@ -276,9 +344,8 @@ def diseases(request,pathId=0):
                     data=jsonContent)
                 if doencas_serializer.is_valid():
                     doencas_serializer.save()
-                    messages.success("Doença adicionada com sucesso")
             except:
-                messages.error(request, "Falha no cadastro de nova doença")
+                error
         
     myRequest = HttpRequest()
     myRequest.method = 'GET'
@@ -294,7 +361,7 @@ def diseases(request,pathId=0):
 
     context = {
         'diseases': diseases,
-        'myUser': myUser
+        #'myUser': myUser
     }
 
     return render(request, 'diseases.html', context)

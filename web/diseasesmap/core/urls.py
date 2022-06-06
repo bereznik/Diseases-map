@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include,re_path
-from .views import account, diseases, index,login,logout,dashboard,about,contact, notifications, populate, usertable, about_restrict, contact_restrict
+from .views import account, disease_edit, diseases, index,login,logout,dashboard,about,contact, notifications, populate, user_edit, usertable, about_restrict, contact_restrict
 
 urlpatterns = [
     path('django/', admin.site.urls),
@@ -32,8 +32,12 @@ urlpatterns = [
     path('admin/account/', account),
     path('admin/usertable/', usertable),
     re_path(r'^admin/usertable/(?P<pathId>[/\w]+)/$', usertable),
+    path('admin/user/edit', user_edit),
+    re_path(r'^admin/user/edit/(?P<pathId>[/\w]+)/$', user_edit),
     path('admin/diseases/', diseases),
     re_path(r'^admin/diseases/(?P<pathId>[/\s\w%.@+-]+)/$', diseases),
+    path('admin/disease/edit', disease_edit),
+    re_path(r'^admin/disease/edit/(?P<pathId>[/\s\w%.@+-]+)/$', disease_edit),
     path('db/',include('server.urls')),
 
     # !!POPULATE DATABASE PATH!!

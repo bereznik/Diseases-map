@@ -39,8 +39,9 @@
           <td>{{user.email}}</td>
           <td>{{user.om}}</td>
           <td>
-            <button type="button" class="btn-id btn btn-sm" data-toggle="modal" data-target="#edit_user" data-user="aaa">
-              <i class="fas fa-edit"></i> </button>
+            <form action="/admin/user/edit/{{user.id}}/" method="get">
+              <button type="submit" class="btn btn-sm"><i class="fas fa-edit" ></i></button>
+            </form>
           </td>
           <td>
             <form action="/admin/usertable/{{user.id}}/" method="post">

@@ -32,7 +32,7 @@
               <p class="card-text">{{disease.descricao}}</p>
               <a class="card-link" href="{{disease.link}}">Saiba Mais
                 <!-- <div style="font-size: 10px; text-align: right;">Excluir</div> -->
-                <form action="/admin/diseases/{{disease.nome}}/" method="post" style="text-align: right;">
+                <form action="/admin/disease/edit/{{disease.nome}}/" method="get" style="text-align: right;">
                     <div class="row justify-content-end">
                         <div class="col-2">
                             <form action="" method="post" style="text-align: right;">
@@ -51,30 +51,6 @@
           </div>
           {% endfor %}
           </div>
-        <!-- <table class="table table-striped table-bordered table-hover table-condensed">
-            <thead>
-                <tr>
-                    <th scope="col">Doença</th>
-                    <th scope="col">Descrição</th>
-                    <th scope="col">Link</th>
-                    <th scope="col">Vacina Disponível</th>
-                </tr>
-            </thead>
-            <tbody id="myTable">
-                {% for disease in diseases%}
-                <tr>
-                    <th scope="row"> {{disease.nome}}</th>
-                    <td>{{disease.descricao}}</td>
-                    <td>{{disease.link}}</td>
-                    <td>{{disease.vacinadisp}}</td>
-                    <td>
-                        <form action="/admin/diseases/{{disease.nome}}/" method="post">
-                          <button type="submit" class="btn btn-sm"><i class="fas fa-trash" ></i></button>
-                        </form></td>
-                    {% endfor %}
-                </tr>
-            </tbody>
-        </table> -->
         <div class="pagination">
             <span class="step-links">
                 {% if diseases.has_previous %}
