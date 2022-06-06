@@ -212,7 +212,7 @@ def usertable(request, pathId=0):
     dict = []
     for namespace in noDictResponseApi:
         dict.append(vars(namespace))
-    paginator = Paginator(dict, 1)
+    paginator = Paginator(dict, 10)
     page_number = request.GET.get('page')
     users = paginator.get_page(page_number)
 
