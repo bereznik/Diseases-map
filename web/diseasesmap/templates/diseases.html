@@ -44,6 +44,23 @@
                 </tr>
             </tbody>
         </table>
+        <div class="pagination">
+            <span class="step-links">
+                {% if diseases.has_previous %}
+                <a href="?page=1">&laquo;</a>
+                <a href="?page={{ diseases.previous_page_number }}"></a>
+                {% endif %}
+
+                <span class="current">
+                    {{ diseases.number }} of {{ diseases.paginator.num_pages }}.
+                </span>
+
+                {% if diseases.has_next %}
+                <a href="?page={{ diseases.next_page_number }}"></a>
+                <a href="?page={{ diseases.paginator.num_pages }}"></a>
+                {% endif %}
+            </span>
+        </div>
     </div>
 
     <div class="modal fade" id="add_disease" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

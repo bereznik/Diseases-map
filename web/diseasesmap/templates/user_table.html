@@ -44,6 +44,23 @@
         {% endfor %}
       </tbody>
     </table>
+    <div class="pagination">
+      <span class="step-links">
+        {% if users.has_previous %}
+        <a href="?page=1">&laquo;</a>
+        <a href="?page={{ users.previous_page_number }}"></a>
+        {% endif %}
+
+        <span class="current">
+          {{ users.number }} of {{ users.paginator.num_pages }}.
+        </span>
+
+        {% if users.has_next %}
+        <a href="?page={{ users.next_page_number }}"></a>
+        <a href="?page={{ users.paginator.num_pages }}">&raquo;</a>
+        {% endif %}
+      </span>
+    </div>
   </div>
 
   <div class="modal fade" id="add_user" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

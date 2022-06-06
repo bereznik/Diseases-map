@@ -2,6 +2,7 @@ from django.forms import formset_factory
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpRequest
+from django.core.paginator import Paginator
 
 import json
 import os
@@ -62,6 +63,7 @@ def index(request):
     return render(request, 'index.html', {})
 
 
+@csrf_exempt
 def notifications(request):
     myRequest = HttpRequest()
     myRequest.method = 'GET'
@@ -72,10 +74,11 @@ def notifications(request):
     dict = []
     for namespace in noDictResponseApi:
         dict.append(vars(namespace))
-    context = {
-        'notifications': dict
-    }
-    return render(request, 'notifications.html', context)
+    paginator = Paginator(dict, 100)
+    page_number = request.GET.get('page')
+    notifications = paginator.get_page(page_number)
+
+    return render(request, 'notifications.html', {'notifications': notifications})
 
 
 def account(request):
@@ -112,12 +115,14 @@ def usertable(request):
     dict = []
     for namespace in noDictResponseApi:
         dict.append(vars(namespace))
-    context = {
-        'users': dict
-    }
-    return render(request, 'user_table.html', context)
+    paginator = Paginator(dict, 1)
+    page_number = request.GET.get('page')
+    users = paginator.get_page(page_number)
+
+    return render(request, 'user_table.html', {'users': users})
 
 
+@csrf_exempt
 def diseases(request):
     if request.method == 'POST':
         dictResponse = {
@@ -144,10 +149,11 @@ def diseases(request):
     dict = []
     for namespace in noDictResponseApi:
         dict.append(vars(namespace))
-    context = {
-        'diseases': dict
-    }
-    return render(request, 'diseases.html', context)
+    paginator = Paginator(dict, 10)
+    page_number = request.GET.get('page')
+    diseases = paginator.get_page(page_number)
+
+    return render(request, 'diseases.html', {'diseases': diseases})
 
 
 def populate(request):
