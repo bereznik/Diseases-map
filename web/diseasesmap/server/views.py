@@ -36,9 +36,14 @@ def localidadesApi(request,pathId=0):
 
 def notificacoesApi(request,pathId=0):
     if request.method=='GET':
-        notificacoes = Notificacoes.objects.all()
-        notificacoes_serializer=NotificacoesSerializers(notificacoes,many=True)
-        return JsonResponse(notificacoes_serializer.data,safe=False)
+        if pathId==0:
+            notificacoes = Notificacoes.objects.all()
+            notificacoes_serializer=NotificacoesSerializers(notificacoes,many=True)
+            return JsonResponse(notificacoes_serializer.data,safe=False)
+        else:
+            notificacoes = Notificacoes.objects.get(id=pathId)
+            notificacoes_serializer=NotificacoesSerializers(notificacoes)
+            return JsonResponse(notificacoes_serializer.data,safe=False)
     elif request.method=='POST':
         notificacoes_data=JSONParser().parse(request)
         notificacoes_serializer=NotificacoesSerializers(data=notificacoes_data)
@@ -62,9 +67,14 @@ def notificacoesApi(request,pathId=0):
 @csrf_exempt
 def doencasApi(request,pathId=0):
     if request.method=='GET':
-        doencas = Doencas.objects.all()
-        doencas_serializer=DoencasSerializers(doencas,many=True)
-        return JsonResponse(doencas_serializer.data,safe=False)
+        if pathId==0:
+            doencas = Doencas.objects.all()
+            doencas_serializer=DoencasSerializers(doencas,many=True)
+            return JsonResponse(doencas_serializer.data,safe=False)
+        else:
+            doencas = Doencas.objects.get(nome=pathId)
+            doencas_serializer=DoencasSerializers(doencas)
+            return JsonResponse(doencas_serializer.data,safe=False)
     elif request.method=='POST':
         doencas_data=JSONParser().parse(request)
         doencas_serializer=DoencasSerializers(data=doencas_data)

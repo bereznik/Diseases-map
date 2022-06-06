@@ -18,7 +18,6 @@ from server import views, serializers
 from server.models import Localidades, Notificacoes, Doencas, Usuarios
 
 def authorization(request):
-    return ""
     try:
         myRequest = HttpRequest()
         myRequest.method = 'GET'
@@ -98,6 +97,10 @@ def login(request):
 
 
 def index(request):
+    myUser = authorization(request)
+    if myUser==error:
+        return login(request)
+
     jsonNotifications = get_notifications()
     
     myRequest = HttpRequest()
@@ -108,9 +111,6 @@ def index(request):
     for namespace in noDictResponseApi:
         dict.append(vars(namespace))
 
-    myUser = authorization(request)
-    if myUser==error:
-        return login(request)
     context = {
         'diseases': dict,
         'myUser': myUser,
