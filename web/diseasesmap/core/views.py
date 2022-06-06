@@ -3,8 +3,8 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpRequest
 
-import json, os
-from itsdangerous import json
+import json
+import os
 import pandas as pd
 import mysql.connector as sql
 
@@ -63,15 +63,17 @@ def index(request):
 
 
 def notifications(request):
-    db_connection = sql.connect(host='127.0.0.1', database='diseasesmapdb', user='diseasesmapadmin',
-                                password='diseasesmap')
-    dataframe = pd.read_sql('select l.cidade, d.nome, nt.casos from ' +
-                            '(( server_notificacoestotal as nt join server_doencas as d ' +
-                            'on (nt.iddoenca = d.id))' +
-                            'join server_localidades as l on (l.id = nt.idmunicipio))', con=db_connection)
-    notificacoes = dataframe.to_dict('records')
+    myRequest = HttpRequest()
+    myRequest.method = 'GET'
+
+    jsonResponse = views.notificacoesApi(myRequest)
+    noDictResponseApi = json.loads(
+        jsonResponse.content, object_hook=lambda d: SimpleNamespace(**d))
+    dict = []
+    for namespace in noDictResponseApi:
+        dict.append(vars(namespace))
     context = {
-        'notificacoes': notificacoes
+        'notifications': dict
     }
     return render(request, 'notifications.html', context)
 
@@ -105,12 +107,13 @@ def usertable(request):
     myRequest = HttpRequest()
     myRequest.method = 'GET'
     jsonResponse = views.usuariosApi(myRequest)
-    noDictResponseApi = json.loads(jsonResponse.content, object_hook=lambda d: SimpleNamespace(**d))
+    noDictResponseApi = json.loads(
+        jsonResponse.content, object_hook=lambda d: SimpleNamespace(**d))
     dict = []
     for namespace in noDictResponseApi:
         dict.append(vars(namespace))
     context = {
-        'users' : dict
+        'users': dict
     }
     return render(request, 'user_table.html', context)
 
@@ -136,12 +139,13 @@ def diseases(request):
     myRequest = HttpRequest()
     myRequest.method = 'GET'
     jsonResponse = views.doencasApi(myRequest)
-    noDictResponseApi = json.loads(jsonResponse.content, object_hook=lambda d: SimpleNamespace(**d))
+    noDictResponseApi = json.loads(
+        jsonResponse.content, object_hook=lambda d: SimpleNamespace(**d))
     dict = []
     for namespace in noDictResponseApi:
         dict.append(vars(namespace))
     context = {
-        'diseases' : dict
+        'diseases': dict
     }
     return render(request, 'diseases.html', context)
 
@@ -177,11 +181,13 @@ def populate(request):
     #         print("ERRO")
     #         return render(request, 'populate.html', {})
 
-    notificacoesFile = open(os.path.realpath(os.path.join(os.path.dirname(__file__), 'xslx', 'notificacoes.json')))
+    notificacoesFile = open(os.path.realpath(os.path.join(
+        os.path.dirname(__file__), 'xslx', 'notificacoes.json')))
     notificacoes = json.load(notificacoesFile)
     for notificacao in notificacoes:
         print(notificacao)
-        notificacoes_serializer=serializers.NotificacoesSerializers(data=notificacao)
+        notificacoes_serializer = serializers.NotificacoesSerializers(
+            data=notificacao)
         if notificacoes_serializer.is_valid():
             notificacoes_serializer.save()
         else:
