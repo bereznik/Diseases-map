@@ -2,10 +2,12 @@ from django.forms import formset_factory
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpRequest
+
 import json, os
 from itsdangerous import json
 import pandas as pd
 import mysql.connector as sql
+
 
 from types import SimpleNamespace
 from django.contrib import messages
@@ -88,18 +90,16 @@ def usertable(request):
             "email": request.POST['email'],
             "senha": request.POST['senha'],
             "om": request.POST['om'],
-            "foto": "teste"
+            "foto": ""
         }
+        jsonContent = json.loads(json.dumps(dictResponse))
 
         try:
             usuarios_serializer = serializers.UsuariosSerializers(
-                data=json.dumps(dictResponse))
-            print(json.dumps(dictResponse))
+                data=jsonContent)
             if usuarios_serializer.is_valid():
                 usuarios_serializer.save()
                 messages.success("Usuário adicionado com sucesso")
-            else:
-                print("ERRO")
         except:
             messages.error(request, "Falha no cadastro de novo usuário")
     myRequest = HttpRequest()
@@ -123,9 +123,14 @@ def diseases(request):
             "descricao": request.POST['descricao'],
             "link": request.POST['link']
         }
+        jsonContent = json.loads(json.dumps(dictResponse))
+
         try:
-            views.doencasApi(json.dumps(dictResponse))
-            messages.success("Doença adicionada com sucesso")
+            doencas_serializer = serializers.DoencasSerializers(
+                data=jsonContent)
+            if doencas_serializer.is_valid():
+                doencas_serializer.save()
+                messages.success("Doença adicionada com sucesso")
         except:
             messages.error(request, "Falha no cadastro de nova doença")
     myRequest = HttpRequest()
@@ -139,6 +144,7 @@ def diseases(request):
         'diseases' : dict
     }
     return render(request, 'diseases.html', context)
+
 
 def populate(request):
     # usersFile = open(os.path.realpath(os.path.join(os.path.dirname(__file__), 'xslx', 'users.json')))
@@ -159,7 +165,7 @@ def populate(request):
     #     else:
     #         print("ERRO")
     #         return render(request, 'populate.html', {})
-   
+
     # doencasFile = open(os.path.realpath(os.path.join(os.path.dirname(__file__), 'xslx', 'doencas.json')))
     # doencas = json.load(doencasFile)
     # for doenca in doencas:
