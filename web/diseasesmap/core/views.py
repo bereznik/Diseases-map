@@ -9,7 +9,7 @@ from distutils.log import error
 import json
 import os
 import pandas as pd
-import mysql.connector as sql
+#import mysql.connector as sql
 
 
 from types import SimpleNamespace
@@ -39,7 +39,9 @@ def logout(request):
 
 
 def dashboard(request):
-    return render(request, 'dashboard.html', {})
+    json = get_notifications()
+    data = {"chave":json};
+    return render(request, 'dashboard.html', data)
 
 
 def about_restrict(request):
@@ -95,13 +97,19 @@ def login(request):
 
 
 def index(request):
+    
+    json = get_notifications()
+    
+
     myUser = authorization(request)
     if myUser==error:
         return login(request)
     context = {
-        'myUser': myUser
+        'myUser': myUser,
+        'chave':json
     }
     return render(request, 'index.html', context)
+
 
 
 @csrf_exempt
@@ -312,3 +320,16 @@ def populate(request):
             return render(request, 'populate.html', {})
 
     return render(request, 'populate.html', {})
+
+def get_notifications():
+    QUERY = ''' SELECT l.longitude AS long, l.latitude AS lat, l.nome as municipio, n.nomedoenca AS nomedoenca, n.casos AS casosTotais
+                FROM Notificacoes n JOIN Localidades l ON n.idmunicipio = l.id '''
+
+    df = pd.DataFrame(data ={'lat':[-22.9068,-22.9068,1,1],'long':[-43.1729,-43.1729,3,3],'municipio':['rio','rio','sp','sp'],
+    'nome':['Dengue','Chicungunha','Dengue','COVID'],'casosTotais':[1,2,3,4]})
+
+    cols = ['lat','long','municipio']
+    json = df.groupby(cols).apply(lambda g: g.drop(cols, axis=1).to_dict('records')).reset_index().rename({0:'doencas'}, axis=1).to_dict('records')
+    return json
+    
+
