@@ -177,4 +177,15 @@ def populate(request):
     #         print("ERRO")
     #         return render(request, 'populate.html', {})
 
+    notificacoesFile = open(os.path.realpath(os.path.join(os.path.dirname(__file__), 'xslx', 'notificacoes.json')))
+    notificacoes = json.load(notificacoesFile)
+    for notificacao in notificacoes:
+        print(notificacao)
+        notificacoes_serializer=serializers.NotificacoesSerializers(data=notificacao)
+        if notificacoes_serializer.is_valid():
+            notificacoes_serializer.save()
+        else:
+            print("ERRO")
+            return render(request, 'populate.html', {})
+
     return render(request, 'populate.html', {})
