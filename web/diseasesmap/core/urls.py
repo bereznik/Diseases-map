@@ -28,12 +28,14 @@ urlpatterns = [
     path('admin/about/', about),
     path('admin/contact/', contact),
     path('admin/notifications/', notifications),
+    re_path(r'^admin/notifications/(?P<pathId>[/\w]+)/$', notifications),
     path('admin/account/', account),
     path('admin/usertable/', usertable),
     re_path(r'^admin/usertable/(?P<pathId>[/\w]+)/$', usertable),
     path('admin/diseases/', diseases),
+    re_path(r'^admin/diseases/(?P<pathId>[/\w]+)/$', diseases),
     path('db/',include('server.urls')),
 
-    #DANGEROUS PATH
+    # !!POPULATE DATABASE PATH!! #
     path('admin/db/populate', populate)
 ]

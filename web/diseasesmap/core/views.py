@@ -9,7 +9,7 @@ from distutils.log import error
 import json
 import os
 import pandas as pd
-#import mysql.connector as sql
+import mysql.connector as sql
 
 
 from types import SimpleNamespace
@@ -326,15 +326,15 @@ def get_notifications():
     db_connection = sql.connect(host='127.0.0.1', database='diseasesmapdb', user='diseasesmapadmin',
                                 password='diseasesmap')
     
-    QUERY = ''' SELECT l.longitude AS long, l.latitude AS lat, l.nome as municipio, n.nomedoenca AS nomedoenca, n.casos AS casosTotais
-                FROM Notificacoes n JOIN Localidades l ON n.idmunicipio = l.id '''
+    QUERY = ''' SELECT l.longitude AS lon, l.latitude AS lat, l.nome as municipio, n.nomedoenca_id AS nomedoenca, n.casos AS casosTotais
+                FROM server_notificacoes n JOIN server_localidades l ON n.idmunicipio_id = l.id '''
 
     df = pd.read_sql(QUERY,db_connection)
     
-    # df = pd.DataFrame(data ={'lat':[-22.9068,-22.9068,1,1],'long':[-43.1729,-43.1729,3,3],'municipio':['rio','rio','sp','sp'],
+    # df = pd.DataFrame(data ={'lat':[-22.9068,-22.9068,1,1],'lon':[-43.1729,-43.1729,3,3],'municipio':['rio','rio','sp','sp'],
     # 'nome':['Dengue','Chicungunha','Dengue','COVID'],'casosTotais':[1,2,3,4]})
 
-    cols = ['lat','long','municipio']
+    cols = ['lat','lon','municipio']
     json = df.groupby(cols).apply(lambda g: g.drop(cols, axis=1).to_dict('records')).reset_index().rename({0:'doencas'}, axis=1).to_dict('records')
     return json
     

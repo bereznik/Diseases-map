@@ -41,7 +41,7 @@
           })
       })
   })
-    //var coord = [{lat:-22.9068,long:-43.1729,municipio:"Rio de Janeiro",doencas:[{nome:"Dengue",casosTotais:50},{nome:"COVID",casosTotais:120},{nome:"Chicungunha",casosTotais:324}]},{lat:-3.4168,long:-65.8561,municipio:"Apuí",doencas:[{nome:"Chicungunha",casosTotais:100}]}];
+    //var coord = [{lat:-22.9068,lon:-43.1729,municipio:"Rio de Janeiro",doencas:[{nome:"Dengue",casosTotais:50},{nome:"COVID",casosTotais:120},{nome:"Chicungunha",casosTotais:324}]},{lat:-3.4168,lon:-65.8561,municipio:"Apuí",doencas:[{nome:"Chicungunha",casosTotais:100}]}];
     
     var coord = `{{chave|safe}}`;
     coord = eval(coord);
@@ -49,7 +49,7 @@
     var list_features = [];
     for (let i=0;i<coord.length;i++){
       list_features.push(new ol.Feature({
-                  geometry: new ol.geom.Point(ol.proj.fromLonLat([coord[i]["long"], coord[i]["lat"]]))
+                  geometry: new ol.geom.Point(ol.proj.fromLonLat([coord[i]["lon"], coord[i]["lat"]]))
               }));
     }
     var layer = new ol.layer.Vector({
@@ -91,7 +91,7 @@
         //procurar pelo municipio:
   
         for (let i=0;i<coord.length;i++){
-          if(coord[i]['long'] == point_long){
+          if(coord[i]['lon'] == point_long){
             var position = i;
           }
         }
