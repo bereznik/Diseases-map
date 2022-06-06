@@ -149,7 +149,7 @@ def notifications(request):
     notifications = paginator.get_page(page_number)
 
     context = {
-        'notifications': dict,
+        'notifications': notifications,
         'myUser': myUser
     }
 
