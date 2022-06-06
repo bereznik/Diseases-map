@@ -28,6 +28,7 @@
                     <th scope="col">Doença</th>
                     <th scope="col">Descrição</th>
                     <th scope="col">Link</th>
+                    <th scope="col">Vacina Disponível</th>
                 </tr>
             </thead>
             <tbody id="myTable">
@@ -36,6 +37,7 @@
                     <th scope="row"> {{disease.nome}}</th>
                     <td>{{disease.descricao}}</td>
                     <td>{{disease.link}}</td>
+                    <td>{{disease.vacinadisp}}</td>
                     <td><i class="fas fa-edit"></i></td>
                     <td><i class="fas fa-trash"></i></td>
                     {% endfor %}
