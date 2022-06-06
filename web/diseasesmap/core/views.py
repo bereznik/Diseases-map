@@ -66,16 +66,41 @@ def index(request):
 
 @csrf_exempt
 def notifications(request):
+    db_connection = sql.connect(host='127.0.0.1', database='diseasesmapdb', user='diseasesmapadmin',
+                                password='diseasesmap')
+    if request.method == 'POST':
+        casos = request.POST['casos']
+        nomedoenca_id = request.POST['nomedoenca_id']
+        nomemunicipio = request.POST['nomemunicipio']
+        nomeestado = request.POST['nomeestado']
+        id = pd.read_sql('select id from diseasesmapdb.server_localidades'
+                         + ' where nome = "' + nomemunicipio + '" and estado = "' + nomeestado + '"', con=db_connection)
+        idmunicipio_id = id.to_dict('records')[0]
+
+        dictResponse = {
+            "idmunicipio": idmunicipio_id['id'],
+            "nomedoenca": nomedoenca_id,
+            "casos": casos
+        }
+        jsonContent = json.loads(json.dumps(dictResponse))
+
+        try:
+            notifications_serializer = serializers.NotificacoesSerializers(
+                data=jsonContent)
+            if notifications_serializer.is_valid():
+                notifications_serializer.save()
+                messages.success("Notificação adicionada com sucesso")
+        except:
+            messages.error(request, "Falha no cadastro de nova notificação")
+
     myRequest = HttpRequest()
     myRequest.method = 'GET'
 
-    jsonResponse = views.notificacoesApi(myRequest)
-    noDictResponseApi = json.loads(
-        jsonResponse.content, object_hook=lambda d: SimpleNamespace(**d))
-    dict = []
-    for namespace in noDictResponseApi:
-        dict.append(vars(namespace))
-    paginator = Paginator(dict, 100)
+    nome = 'select l.nome, nt.nomedoenca_id, nt.casos from diseasesmapdb.server_notificacoes as nt join diseasesmapdb.server_localidades as l on nt.idmunicipio_id = l.id'
+    dataframe = pd.read_sql(nome, con=db_connection)
+    notifications = dataframe.to_dict('records')
+
+    paginator = Paginator(notifications, 100)
     page_number = request.GET.get('page')
     notifications = paginator.get_page(page_number)
 
@@ -87,11 +112,11 @@ def account(request):
 
 
 @csrf_exempt
-def usertable(request,pathId=0):
+def usertable(request, pathId=0):
     if request.method == 'POST':
-        if pathId!=0:
+        if pathId != 0:
             try:
-                usuario=Usuarios.objects.get(id=pathId)
+                usuario = Usuarios.objects.get(id=pathId)
                 usuario.delete()
                 messages.success("Usuário removido com sucesso")
                 usertable(HttpRequest())
@@ -120,7 +145,7 @@ def usertable(request,pathId=0):
             except:
                 messages.error(request, "Falha no cadastro de novo usuário")
                 usertable(HttpRequest())
-    
+
     myRequest = HttpRequest()
     myRequest.method = 'GET'
     jsonResponse = views.usuariosApi(myRequest)
