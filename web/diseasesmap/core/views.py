@@ -12,6 +12,7 @@ import mysql.connector as sql
 from types import SimpleNamespace
 from django.contrib import messages
 from server import views, serializers
+from server.models import Localidades, Notificacoes, Doencas, Usuarios
 
 
 def dashboard(request):
@@ -83,27 +84,40 @@ def account(request):
 
 
 @csrf_exempt
-def usertable(request):
+def usertable(request,pathId=0):
     if request.method == 'POST':
-        dictResponse = {
-            "posto": request.POST['posto'],
-            "nome": request.POST['nome'],
-            "nomeguerra": request.POST['nomeguerra'],
-            "email": request.POST['email'],
-            "senha": request.POST['senha'],
-            "om": request.POST['om'],
-            "foto": ""
-        }
-        jsonContent = json.loads(json.dumps(dictResponse))
+        if pathId!=0:
+            try:
+                usuario=Usuarios.objects.get(id=pathId)
+                usuario.delete()
+                messages.success("Usuário removido com sucesso")
+                usertable(HttpRequest())
+            except:
+                messages.error(request, "Falha na remocao de novo usuário")
+                usertable(HttpRequest())
+        else:
+            dictResponse = {
+                "posto": request.POST['posto'],
+                "nome": request.POST['nome'],
+                "nomeguerra": request.POST['nomeguerra'],
+                "email": request.POST['email'],
+                "senha": request.POST['senha'],
+                "om": request.POST['om'],
+                "foto": ""
+            }
+            jsonContent = json.loads(json.dumps(dictResponse))
 
-        try:
-            usuarios_serializer = serializers.UsuariosSerializers(
-                data=jsonContent)
-            if usuarios_serializer.is_valid():
-                usuarios_serializer.save()
-                messages.success("Usuário adicionado com sucesso")
-        except:
-            messages.error(request, "Falha no cadastro de novo usuário")
+            try:
+                usuarios_serializer = serializers.UsuariosSerializers(
+                    data=jsonContent)
+                if usuarios_serializer.is_valid():
+                    usuarios_serializer.save()
+                    messages.success("Usuário adicionado com sucesso")
+                    usertable(HttpRequest())
+            except:
+                messages.error(request, "Falha no cadastro de novo usuário")
+                usertable(HttpRequest())
+    
     myRequest = HttpRequest()
     myRequest.method = 'GET'
     jsonResponse = views.usuariosApi(myRequest)
