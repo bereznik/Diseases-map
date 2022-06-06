@@ -1,8 +1,13 @@
+from django.forms import formset_factory
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpRequest
-import json
-import os
+
+import json, os
+from itsdangerous import json
+import pandas as pd
+import mysql.connector as sql
+
 
 from types import SimpleNamespace
 from django.contrib import messages
@@ -58,7 +63,17 @@ def index(request):
 
 
 def notifications(request):
-    return render(request, 'notifications.html', {})
+    db_connection = sql.connect(host='127.0.0.1', database='diseasesmapdb', user='diseasesmapadmin',
+                                password='diseasesmap')
+    dataframe = pd.read_sql('select l.cidade, d.nome, nt.casos from ' +
+                            '(( server_notificacoestotal as nt join server_doencas as d ' +
+                            'on (nt.iddoenca = d.id))' +
+                            'join server_localidades as l on (l.id = nt.idmunicipio))', con=db_connection)
+    notificacoes = dataframe.to_dict('records')
+    context = {
+        'notificacoes': notificacoes
+    }
+    return render(request, 'notifications.html', context)
 
 
 def account(request):
@@ -87,7 +102,17 @@ def usertable(request):
                 messages.success("Usuário adicionado com sucesso")
         except:
             messages.error(request, "Falha no cadastro de novo usuário")
-    return render(request, 'user_table.html', {})
+    myRequest = HttpRequest()
+    myRequest.method = 'GET'
+    jsonResponse = views.usuariosApi(myRequest)
+    noDictResponseApi = json.loads(jsonResponse.content, object_hook=lambda d: SimpleNamespace(**d))
+    dict = []
+    for namespace in noDictResponseApi:
+        dict.append(vars(namespace))
+    context = {
+        'users' : dict
+    }
+    return render(request, 'user_table.html', context)
 
 
 def diseases(request):
@@ -108,7 +133,17 @@ def diseases(request):
                 messages.success("Doença adicionada com sucesso")
         except:
             messages.error(request, "Falha no cadastro de nova doença")
-    return render(request, 'diseases.html', {})
+    myRequest = HttpRequest()
+    myRequest.method = 'GET'
+    jsonResponse = views.doencasApi(myRequest)
+    noDictResponseApi = json.loads(jsonResponse.content, object_hook=lambda d: SimpleNamespace(**d))
+    dict = []
+    for namespace in noDictResponseApi:
+        dict.append(vars(namespace))
+    context = {
+        'diseases' : dict
+    }
+    return render(request, 'diseases.html', context)
 
 
 def populate(request):
