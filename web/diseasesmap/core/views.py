@@ -113,7 +113,7 @@ def index(request):
 
 
 @csrf_exempt
-def notifications(request):
+def notifications(request,pathId=0):
     myUser = authorization(request)
     if myUser==error:
         return login(request)
@@ -121,34 +121,42 @@ def notifications(request):
     db_connection = sql.connect(host='127.0.0.1', database='diseasesmapdb', user='diseasesmapadmin',
                                 password='diseasesmap')
     if request.method == 'POST':
-        casos = request.POST['casos']
-        nomedoenca_id = request.POST['nomedoenca_id']
-        nomemunicipio = request.POST['nomemunicipio']
-        nomeestado = request.POST['nomeestado']
-        id = pd.read_sql('select id from diseasesmapdb.server_localidades'
-                         + ' where nome = "' + nomemunicipio + '" and estado = "' + nomeestado + '"', con=db_connection)
-        idmunicipio_id = id.to_dict('records')[0]
+        if pathId!=0:
+            try:
+                notificacao = Notificacoes.objects.get(id=pathId)
+                notificacao.delete()
+                messages.success("Notificacao removida com sucesso")
+            except:
+                messages.error(request, "Falha na remocao de notificacao")
+        else:
+            casos = request.POST['casos']
+            nomedoenca_id = request.POST['nomedoenca_id']
+            nomemunicipio = request.POST['nomemunicipio']
+            nomeestado = request.POST['nomeestado']
+            id = pd.read_sql('select id from diseasesmapdb.server_localidades'
+                            + ' where nome = "' + nomemunicipio + '" and estado = "' + nomeestado + '"', con=db_connection)
+            idmunicipio_id = id.to_dict('records')[0]
 
-        dictResponse = {
-            "idmunicipio": idmunicipio_id['id'],
-            "nomedoenca": nomedoenca_id,
-            "casos": casos
-        }
-        jsonContent = json.loads(json.dumps(dictResponse))
+            dictResponse = {
+                "idmunicipio": idmunicipio_id['id'],
+                "nomedoenca": nomedoenca_id,
+                "casos": casos
+            }
+            jsonContent = json.loads(json.dumps(dictResponse))
 
-        try:
-            notifications_serializer = serializers.NotificacoesSerializers(
-                data=jsonContent)
-            if notifications_serializer.is_valid():
-                notifications_serializer.save()
-                messages.success("Notificação adicionada com sucesso")
-        except:
-            messages.error(request, "Falha no cadastro de nova notificação")
+            try:
+                notifications_serializer = serializers.NotificacoesSerializers(
+                    data=jsonContent)
+                if notifications_serializer.is_valid():
+                    notifications_serializer.save()
+                    messages.success("Notificação adicionada com sucesso")
+            except:
+                messages.error(request, "Falha no cadastro de nova notificação")
 
     myRequest = HttpRequest()
     myRequest.method = 'GET'
 
-    nome = 'select l.nome, nt.nomedoenca_id, nt.casos from diseasesmapdb.server_notificacoes as nt join diseasesmapdb.server_localidades as l on nt.idmunicipio_id = l.id'
+    nome = 'select l.nome, nt.nomedoenca_id, nt.casos, nt.id from diseasesmapdb.server_notificacoes as nt join diseasesmapdb.server_localidades as l on nt.idmunicipio_id = l.id'
     dataframe = pd.read_sql(nome, con=db_connection)
     notifications = dataframe.to_dict('records')
 
@@ -233,28 +241,37 @@ def usertable(request, pathId=0):
 
 
 @csrf_exempt
-def diseases(request):
+def diseases(request,pathId=0):
     myUser = authorization(request)
     if myUser==error:
         return login(request)
 
     if request.method == 'POST':
-        dictResponse = {
-            "nome": request.POST['nome'],
-            "vacinadisp": request.POST['vacinadisp'],
-            "descricao": request.POST['descricao'],
-            "link": request.POST['link']
-        }
-        jsonContent = json.loads(json.dumps(dictResponse))
+        if pathId != 0:
+            try:
+                doenca = Doencas.objects.get(nome=pathId)
+                doenca.delete()
+                messages.success("Doença removido com sucesso")
+            except:
+                messages.error(request, "Falha na remocao de novo doença")
+        else:
+            dictResponse = {
+                "nome": request.POST['nome'],
+                "vacinadisp": request.POST['vacinadisp'],
+                "descricao": request.POST['descricao'],
+                "link": request.POST['link']
+            }
+            jsonContent = json.loads(json.dumps(dictResponse))
 
-        try:
-            doencas_serializer = serializers.DoencasSerializers(
-                data=jsonContent)
-            if doencas_serializer.is_valid():
-                doencas_serializer.save()
-                messages.success("Doença adicionada com sucesso")
-        except:
-            messages.error(request, "Falha no cadastro de nova doença")
+            try:
+                doencas_serializer = serializers.DoencasSerializers(
+                    data=jsonContent)
+                if doencas_serializer.is_valid():
+                    doencas_serializer.save()
+                    messages.success("Doença adicionada com sucesso")
+            except:
+                messages.error(request, "Falha no cadastro de nova doença")
+        
     myRequest = HttpRequest()
     myRequest.method = 'GET'
     jsonResponse = views.doencasApi(myRequest)
@@ -263,7 +280,7 @@ def diseases(request):
     dict = []
     for namespace in noDictResponseApi:
         dict.append(vars(namespace))
-    paginator = Paginator(dict, 10)
+    paginator = Paginator(dict, 6)
     page_number = request.GET.get('page')
     diseases = paginator.get_page(page_number)
 
@@ -284,27 +301,27 @@ def populate(request):
     #     if usuarios_serializer.is_valid():
     #         usuarios_serializer.save()
 
-    # localidadesFile = open(os.path.realpath(os.path.join(os.path.dirname(__file__), 'xslx', 'localidades.json')))
-    # localidades = json.load(localidadesFile)
-    # for localidade in localidades:
-    #     print(localidade)
-    #     localidades_serializer=serializers.LocalidadesSerializers(data=localidade)
-    #     if localidades_serializer.is_valid():
-    #         localidades_serializer.save()
-    #     else:
-    #         print("ERRO")
-    #         return render(request, 'populate.html', {})
+    localidadesFile = open(os.path.realpath(os.path.join(os.path.dirname(__file__), 'xslx', 'localidades.json')))
+    localidades = json.load(localidadesFile)
+    for localidade in localidades:
+        print(localidade)
+        localidades_serializer=serializers.LocalidadesSerializers(data=localidade)
+        if localidades_serializer.is_valid():
+            localidades_serializer.save()
+        else:
+            print("ERRO")
+            return render(request, 'populate.html', {})
 
-    # doencasFile = open(os.path.realpath(os.path.join(os.path.dirname(__file__), 'xslx', 'doencas.json')))
-    # doencas = json.load(doencasFile)
-    # for doenca in doencas:
-    #     print(doenca)
-    #     doencas_serializer=serializers.DoencasSerializers(data=doenca)
-    #     if doencas_serializer.is_valid():
-    #         doencas_serializer.save()
-    #     else:
-    #         print("ERRO")
-    #         return render(request, 'populate.html', {})
+    doencasFile = open(os.path.realpath(os.path.join(os.path.dirname(__file__), 'xslx', 'doencas.json')))
+    doencas = json.load(doencasFile)
+    for doenca in doencas:
+        print(doenca)
+        doencas_serializer=serializers.DoencasSerializers(data=doenca)
+        if doencas_serializer.is_valid():
+            doencas_serializer.save()
+        else:
+            print("ERRO")
+            return render(request, 'populate.html', {})
 
     notificacoesFile = open(os.path.realpath(os.path.join(
         os.path.dirname(__file__), 'xslx', 'notificacoes.json')))
@@ -327,7 +344,7 @@ def get_notifications():
                                 password='diseasesmap')
     
     QUERY = ''' SELECT l.longitude AS lon, l.latitude AS lat, l.nome as municipio, n.nomedoenca_id AS nomedoenca, n.casos AS casosTotais
-                FROM server_notificacoes n JOIN server_localidades l ON n.idmunicipio_id = l.id '''
+                FROM server_notificacoes n JOIN server_localidades l ON n.idmunicipio_id = l.id WHERE n.casos!=0'''
 
     df = pd.read_sql(QUERY,db_connection)
     

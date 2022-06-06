@@ -33,9 +33,9 @@ urlpatterns = [
     path('admin/usertable/', usertable),
     re_path(r'^admin/usertable/(?P<pathId>[/\w]+)/$', usertable),
     path('admin/diseases/', diseases),
-    re_path(r'^admin/diseases/(?P<pathId>[/\w]+)/$', diseases),
+    re_path(r'^admin/diseases/(?P<pathId>[/\s\w%.@+-]+)/$', diseases),
     path('db/',include('server.urls')),
 
-    # !!POPULATE DATABASE PATH!! #
+    # !!POPULATE DATABASE PATH!!
     path('admin/db/populate', populate)
 ]

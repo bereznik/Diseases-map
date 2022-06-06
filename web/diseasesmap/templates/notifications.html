@@ -36,7 +36,10 @@
           <th scope="row">{{notificacao.nome}}</th>
           <td>{{notificacao.nomedoenca_id}}</td>
           <td>{{notificacao.casos}}</td>
-          <td><i class="fas fa-trash"></i></td>
+          <td>
+            <form action="/admin/notifications/{{notificacao.id}}/" method="post">
+              <button type="submit" class="btn btn-sm"><i class="fas fa-trash" ></i></button>
+            </form></td>
         </tr>
         {% endfor %}
       </tbody>

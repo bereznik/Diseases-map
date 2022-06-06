@@ -12,8 +12,8 @@ class Localidades(models.Model):
 
 class Notificacoes(models.Model):
     id = models.AutoField(primary_key=True)
-    idmunicipio = models.ForeignKey('Localidades', on_delete=models.SET_NULL,null=True)
-    nomedoenca = models.ForeignKey('Doencas', on_delete=models.SET_NULL,null=True)
+    idmunicipio = models.ForeignKey('Localidades', on_delete=models.CASCADE,null=True)
+    nomedoenca = models.ForeignKey('Doencas', on_delete=models.CASCADE,null=True)
     casos = models.IntegerField()
 
 class Doencas(models.Model):
