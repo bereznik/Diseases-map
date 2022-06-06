@@ -74,7 +74,7 @@ def doencasApi(request,pathId=0):
         return JsonResponse("Falha ao adicionar", safe=False)
     elif request.method=='PUT':
         doencas_data=JSONParser().parse(request)
-        doenca=Doencas.objects.get(id=doencas_data['id'])
+        doenca=Doencas.objects.get(id=doencas_data['nome'])
         doencas_serializer=DoencasSerializers(doenca,data=doencas_data)
         if doencas_serializer.is_valid():
             doencas_serializer.save()

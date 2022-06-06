@@ -31,33 +31,34 @@
         </tr>
       </thead>
       <tbody id="myTable">
+        {% for notificacao in notifications %}
         <tr>
-          <th scope="row">Rio de Janeiro</th>
-          <td>Dengue</td>
-          <td>116</td>
+          <th scope="row">{{notificacao.nome}}</th>
+          <td>{{notificacao.nomedoenca_id}}</td>
+          <td>{{notificacao.casos}}</td>
+          <td><i class="fas fa-edit"></i></td>
+          <td><i class="fas fa-trash"></i></td>
         </tr>
-        <tr>
-          <th scope="row">Manaus</th>
-          <td>Chagas</td>
-          <td>20</td>
-        </tr>
-        <tr>
-          <th scope="row">Manaus</th>
-          <td>Poliomelite</td>
-          <td>10</td>
-        </tr>
-        <tr>
-          <th scope="row">Belém</th>
-          <td>Chagas</td>
-          <td>15</td>
-        </tr>
-        <tr>
-          <th scope="row">Belém</th>
-          <td>Vilitela</td>
-          <td>10</td>
-        </tr>
+        {% endfor %}
       </tbody>
     </table>
+    <div class="pagination">
+      <span class="step-links">
+        {% if notifications.has_previous %}
+        <a href="?page=1">&laquo;</a>
+        <a href="?page={{ notifications.previous_page_number }}"></a>
+        {% endif %}
+
+        <span class="current">
+          {{ notifications.number }} of {{ notifications.paginator.num_pages }}.
+        </span>
+
+        {% if notifications.has_next %}
+        <a href="?page={{ notifications.next_page_number }}"></a>
+        <a href="?page={{ notifications.paginator.num_pages }}">&raquo;</a>
+        {% endif %}
+      </span>
+    </div>
   </div>
 
   <div class="modal fade" id="add_notification" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -76,16 +77,20 @@
             <div class="form-group">
               <div class="row">
                 <div class="col">
-                  <label for="idmunicipio" class="col-form-label">Localidade</label>
-                  <input type="text" id="idmunicipio" name="idmunicipio" class="form-control form-control-lg" />
+                  <label for="nomemunicipio" class="col-form-label">Municipio</label>
+                  <input type="text" id="nomemunicipio" name="nomemunicipio" class="form-control form-control-lg" />
+                </div>
+                <div class="col">
+                  <label for="nomeestado" class="col-form-label">Estado</label>
+                  <input type="text" id="nomeestado" name="nomeestado" class="form-control form-control-lg" />
                 </div>
                 <div class="col">
                   <label for="casos" class="col-form-label">Número de Casos</label>
                   <input type="number" id="casos" name="casos" class="form-control form-control-lg" />
                 </div>
               </div>
-              <label for="iddoenca" class="col-form-label">Doença</label>
-              <input type="text" id="iddoenca" name="iddoenca" class="form-control form-control-lg" />
+              <label for="nomedoenca_id" class="col-form-label">Doença</label>
+              <input type="text" id="nomedoenca_id" name="nomedoenca_id" class="form-control form-control-lg" />
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-warning" data-dismiss="modal">Voltar</button>

@@ -51,14 +51,11 @@
         <ul class="list-unstyled components mb-0">
             <li class="active">
                 <a href="#userSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                    <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-5.jpg"
-                    class="rounded-circle z-depth-0"
-                    alt="avatar image"
-                    height="30"/> Olá, Marina!
+                    Olá, {{myUser.nomeguerra}}!
                 </a>
                 <ul class="collapse list-unstyled" id="userSubmenu">
                     <li><a id="user_area" href="/admin/account/"> Área do Usuário</a></li>
-                    <li><a href="/login"> Sair</a></li>
+                    <li><a href="/logout"> Sair</a></li>
                 </ul>
             </li>
         </ul>
@@ -75,7 +72,7 @@
             </li>
             <li><a id="contact" href="/admin/usertable/"> Gerenciar Usuários</a></li>
             <li><a href="https://datasus.saude.gov.br/acesso-a-informacao/doencas-e-agravos-de-notificacao-de-2007-em-diante-sinan/"> Data SUS</a></li>
-            <li><a id="contact" href="#"> Suporte</a></li>
+            <li><a id="contact" href="/admin/contact"> Suporte</a></li>
         </ul>
     </nav>
 
