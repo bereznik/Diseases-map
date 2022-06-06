@@ -45,12 +45,16 @@
     
     var coord = `{{chave|safe}}`;
     coord = eval(coord);
-
+    var doencas_selecionadas = ['Chicungunha'];
     var list_features = [];
     for (let i=0;i<coord.length;i++){
-      list_features.push(new ol.Feature({
-                  geometry: new ol.geom.Point(ol.proj.fromLonLat([coord[i]["lon"], coord[i]["lat"]]))
-              }));
+      for(let j=0;j<coord[i]["doencas"].length;j++){
+        if(doencas_selecionadas.includes(coord[i]["doencas"][j]["nome"])){
+          list_features.push(new ol.Feature({
+                      geometry: new ol.geom.Point(ol.proj.fromLonLat([coord[i]["lon"], coord[i]["lat"]]))
+                  }));
+        }
+      }
     }
     var layer = new ol.layer.Vector({
       source: new ol.source.Vector({
@@ -118,8 +122,6 @@
         </tbody>
         </table>`;
           
-
-      //content.innerHTML = coord[position]["municipio"];
 
       overlay.setPosition(coordinate);
     } else {
