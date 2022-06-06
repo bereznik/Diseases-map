@@ -18,6 +18,7 @@ from server import views, serializers
 from server.models import Localidades, Notificacoes, Doencas, Usuarios
 
 def authorization(request):
+    return ""
     try:
         myRequest = HttpRequest()
         myRequest.method = 'GET'
@@ -97,16 +98,23 @@ def login(request):
 
 
 def index(request):
+    jsonNotifications = get_notifications()
     
-    json = get_notifications()
-    
+    myRequest = HttpRequest()
+    myRequest.method = 'GET'
+    jsonResponse = views.doencasApi(myRequest)
+    noDictResponseApi = json.loads(jsonResponse.content, object_hook=lambda d: SimpleNamespace(**d))
+    dict = []
+    for namespace in noDictResponseApi:
+        dict.append(vars(namespace))
 
     myUser = authorization(request)
     if myUser==error:
         return login(request)
     context = {
+        'diseases': dict,
         'myUser': myUser,
-        'chave':json
+        'chave': jsonNotifications
     }
     return render(request, 'index.html', context)
 

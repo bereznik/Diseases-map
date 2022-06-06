@@ -45,14 +45,15 @@
     
     var coord = `{{chave|safe}}`;
     coord = eval(coord);
-    var doencas_selecionadas = ['Chicungunha'];
+    var doencas_selecionadas = ['BOTULISMO','FEBRE AMARELA'];
     var list_features = [];
     for (let i=0;i<coord.length;i++){
       for(let j=0;j<coord[i]["doencas"].length;j++){
-        if(doencas_selecionadas.includes(coord[i]["doencas"][j]["nome"])){
+        if(coord[i]["doencas"][j]["nomedoenca"]=='BOTULISMO'){
           list_features.push(new ol.Feature({
                       geometry: new ol.geom.Point(ol.proj.fromLonLat([coord[i]["lon"], coord[i]["lat"]]))
                   }));
+          continue;
         }
       }
     }
