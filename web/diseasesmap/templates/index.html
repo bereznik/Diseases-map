@@ -42,7 +42,11 @@
           })
       })
   })
-    var coord = [{lat:-22.9068,long:-43.1729,municipio:"Rio de Janeiro",doencas:[{nome:"Dengue",casosTotais:50},{nome:"COVID",casosTotais:120},{nome:"Chicungunha",casosTotais:324}]},{lat:-3.4168,long:-65.8561,municipio:"Apuí",doencas:[{nome:"Chicungunha",casosTotais:100}]}];
+    //var coord = [{lat:-22.9068,long:-43.1729,municipio:"Rio de Janeiro",doencas:[{nome:"Dengue",casosTotais:50},{nome:"COVID",casosTotais:120},{nome:"Chicungunha",casosTotais:324}]},{lat:-3.4168,long:-65.8561,municipio:"Apuí",doencas:[{nome:"Chicungunha",casosTotais:100}]}];
+    
+    var coord = `{{chave|safe}}`;
+    coord = eval(coord);
+
     var list_features = [];
     for (let i=0;i<coord.length;i++){
       list_features.push(new ol.Feature({
@@ -102,7 +106,7 @@
             +"<td>"+coord[position]['municipio']+"</td> </tr>";
         }
 
-        content.innerHTML = `<table class="table tabl-3.4168e-light">
+        content.innerHTML = `<table class="table table-dark">
         <thead> 
           <tr>
             <th scope="col">Doença</th>
@@ -115,8 +119,6 @@
         </tbody>
         </table>`;
           
-
-      //content.innerHTML = coord[position]["municipio"];
 
       overlay.setPosition(coordinate);
     } else {
