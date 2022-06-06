@@ -4,6 +4,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpRequest
 from django.core.paginator import Paginator
 
+from cmath import exp
+from distutils.log import error
 import json
 import os
 import pandas as pd
@@ -14,6 +16,26 @@ from types import SimpleNamespace
 from django.contrib import messages
 from server import views, serializers
 from server.models import Localidades, Notificacoes, Doencas, Usuarios
+
+def authorization(request):
+    try:
+        myRequest = HttpRequest()
+        myRequest.method = 'GET'
+        username = request.COOKIES.get('user')
+        jsonResponse = views.usuariosApi(myRequest, username)
+        print(jsonResponse)
+        dictResponse = json.loads(jsonResponse.content, object_hook=lambda d: SimpleNamespace(**d))
+        return dictResponse
+    except:
+        print("aqui")
+        return error
+
+
+def logout(request):
+    response = login(request)
+    response.set_cookie("user","")
+    return response
+
 
 
 def dashboard(request):
@@ -29,11 +51,22 @@ def contact_restrict(request):
 
 
 def about(request):
-    return render(request, 'about.html', {})
-
+    myUser = authorization(request)
+    if myUser==error:
+        return login(request)
+    context = {
+        'myUser': myUser
+    }
+    return render(request, 'about.html', context)
 
 def contact(request):
-    return render(request, 'contact.html', {})
+    myUser = authorization(request)
+    if myUser==error:
+        return login(request)
+    context = {
+        'myUser': myUser
+    }
+    return render(request, 'contact.html', context)
 
 
 @csrf_exempt
@@ -47,10 +80,11 @@ def login(request):
 
         try:
             jsonResponse = views.usuariosApi(myRequest, username)
-            dictResponse = json.loads(
-                jsonResponse.content, object_hook=lambda d: SimpleNamespace(**d))
+            dictResponse = json.loads(jsonResponse.content, object_hook=lambda d: SimpleNamespace(**d))
             if password == dictResponse.senha:
-                return index(request)
+                response = index(request)
+                response.set_cookie("user",username)
+                return response
             else:
                 messages.error(request, "Senha não encontrada")
                 return render(request, 'login.html', {})
@@ -61,11 +95,21 @@ def login(request):
 
 
 def index(request):
-    return render(request, 'index.html', {})
+    myUser = authorization(request)
+    if myUser==error:
+        return login(request)
+    context = {
+        'myUser': myUser
+    }
+    return render(request, 'index.html', context)
 
 
 @csrf_exempt
 def notifications(request):
+    myUser = authorization(request)
+    if myUser==error:
+        return login(request)
+
     db_connection = sql.connect(host='127.0.0.1', database='diseasesmapdb', user='diseasesmapadmin',
                                 password='diseasesmap')
     if request.method == 'POST':
@@ -104,15 +148,29 @@ def notifications(request):
     page_number = request.GET.get('page')
     notifications = paginator.get_page(page_number)
 
-    return render(request, 'notifications.html', {'notifications': notifications})
+    context = {
+        'notifications': dict,
+        'myUser': myUser
+    }
+
+    return render(request, 'notifications.html', context)
 
 
 def account(request):
-    return render(request, 'account.html', {})
-
+    myUser = authorization(request)
+    if myUser==error:
+        return login(request)
+    context = {
+        'myUser': myUser
+    }
+    return render(request, 'account.html', context)
 
 @csrf_exempt
 def usertable(request, pathId=0):
+    myUser = authorization(request)
+    if myUser==error:
+        return login(request)
+
     if request.method == 'POST':
         if pathId != 0:
             try:
@@ -158,11 +216,20 @@ def usertable(request, pathId=0):
     page_number = request.GET.get('page')
     users = paginator.get_page(page_number)
 
-    return render(request, 'user_table.html', {'users': users})
+    context = {
+        'users': users,
+        'myUser': myUser
+    }
+
+    return render(request, 'user_table.html', context)
 
 
 @csrf_exempt
 def diseases(request):
+    myUser = authorization(request)
+    if myUser==error:
+        return login(request)
+
     if request.method == 'POST':
         dictResponse = {
             "nome": request.POST['nome'],
@@ -192,7 +259,12 @@ def diseases(request):
     page_number = request.GET.get('page')
     diseases = paginator.get_page(page_number)
 
-    return render(request, 'diseases.html', {'diseases': diseases})
+    context = {
+        'diseases': diseases,
+        'myUser': myUser
+    }
+
+    return render(request, 'diseases.html', context)
 
 
 def populate(request):

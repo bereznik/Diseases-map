@@ -39,11 +39,6 @@
           <td>{{user.email}}</td>
           <td>{{user.om}}</td>
           <td>
-            <form action="/admin/usertable/{{user.id}}/" method="get">
-              <button type="submit" class="btn btn-sm"><i class="fas fa-edit" ></i></button>
-            </form>
-          </td>
-          <td>
             <form action="/admin/usertable/{{user.id}}/" method="post">
               <button type="submit" class="btn btn-sm"><i class="fas fa-trash" ></i></button>
             </form>
