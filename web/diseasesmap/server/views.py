@@ -98,7 +98,11 @@ def doencasApi(request,pathId=0):
 @csrf_exempt
 def usuariosApi(request,email=0,pathId=0):
     if request.method=='GET':
-        if email==0:
+        if pathId!=0:
+            usuario=Usuarios.objects.get(id=pathId)
+            usuarios_serializer=UsuariosSerializers(usuario)
+            return JsonResponse(usuarios_serializer.data,safe=False)
+        elif email==0:
             usuarios = Usuarios.objects.all()
             usuarios_serializer=UsuariosSerializers(usuarios,many=True)
             return JsonResponse(usuarios_serializer.data,safe=False)
