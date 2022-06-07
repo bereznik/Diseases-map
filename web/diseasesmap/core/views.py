@@ -38,9 +38,32 @@ def logout(request):
     return response
 
 def dashboard(request):
-    json = get_notifications()
-    data = {"chave":json};
-    return render(request, 'dashboard.html', data)
+    # myUser = authorization(request)
+    # if myUser==error:
+    #     return login(request)
+
+    jsonNotifications = get_notifications()
+    
+    myRequest = HttpRequest()
+    myRequest.method = 'GET'
+    jsonResponse = views.doencasApi(myRequest)
+    noDictResponseApi = json.loads(jsonResponse.content, object_hook=lambda d: SimpleNamespace(**d))
+    dict_doencas = []
+    for namespace in noDictResponseApi:
+        dict_doencas.append(vars(namespace))
+
+    count=0
+    for disease in dict_doencas:
+        disease["id"]=count
+        disease["vacinadisp"]="false"
+        count=count+1
+
+    context = {
+        'diseases': dict_doencas,
+        #'myUser': myUser,
+        'chave': jsonNotifications
+    }
+    return render(request, 'dashboard.html', context)
 
 
 def about_restrict(request):
@@ -106,12 +129,18 @@ def index(request):
     myRequest.method = 'GET'
     jsonResponse = views.doencasApi(myRequest)
     noDictResponseApi = json.loads(jsonResponse.content, object_hook=lambda d: SimpleNamespace(**d))
-    dict = []
+    dict_doencas = []
     for namespace in noDictResponseApi:
-        dict.append(vars(namespace))
+        dict_doencas.append(vars(namespace))
+
+    count=0
+    for disease in dict_doencas:
+        disease["id"]=count
+        disease["vacinadisp"]="false"
+        count=count+1
 
     context = {
-        'diseases': dict,
+        'diseases': dict_doencas,
         #'myUser': myUser,
         'chave': jsonNotifications
     }
