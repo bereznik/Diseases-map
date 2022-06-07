@@ -10,7 +10,7 @@
         disponibliza uma visualização mapeada da incidência de diferentes doenças nas cidades brasileiras.
       </p>
     </div>
-    <!-- <div class="row">
+     <div class="row">
       <div class="col-10" style="margin-right: 0; margin-left: 0; padding-right: 0; padding-left: 0"> -->
         <div id="map" class="map">
           <div id="popup" class="ol-popup">
@@ -18,16 +18,15 @@
             <div id="popup-content"></div>
           </div>
       </div>
-      <!-- </div> -->
-      <!-- <div class="col-2" style="margin-right: 0; margin-left: 0; padding-right: 0; padding-left: 0">
+      </div>
+      <div class="col-2" style="margin-right: 0; margin-left: 0; padding-right: 0; padding-left: 0">
         <div class="card" style="height: 400px;">
           <div class="card-body">
             <h5 class="card-title">Mostrar Doenças</h5>
-                <form style="margin: 0px; max-height: 330px; overflow-y: scroll;">
-                  <button onclick="checkCheckbox()">Submit</button> <br>  
+                <form style="margin: 0px; max-height: 330px; overflow-y: scroll;">  
                   {% for disease in diseases %}
                   <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="diseaseCheckbox{{disease.nome}}" onclick="handleList" checked>
+                    <input type="checkbox" class="form-check-input" id={{disease.id}} onChange="verificar()">
                     <label class="form-check-label" for="check{{disease.nome}}">{{disease.nome}}</label>
                   </div>
                   {% endfor %}
@@ -35,33 +34,46 @@
 
             </div>
           </div>
-        </div> -->
+        </div>
         </div>
         </div>
       </div>
   
   <script type="text/javascript">
-
-    // var doencas = `{{diseases|safe}}`;
-    // doencas = JSON.parse(JSON.stringify(doencas));
-
-    // var doencas_selecionadas = []
     
-    // for(let i=0;i<doencas.length;i++){
-    //       doencas_selecionadas.push(doencas[i]["nome"]);
-    // }
+    var doencas_selecionadas = [];
+    var doencas_dict = eval(`{{diseases|safe}}`);
 
-    // function checkCheckbox(){
-    //   doencas_selecionadas=[]
-    //   for(let i=0;i<doencas.length;i++){
-    //     checkBox = document.getElementById("diseaseCheckbox"+doencas[i]["nome"]);  
-    //     if(checkBox.checked == true){
-    //       doencas_selecionadas.append(doencas[i]["nome"]);
-    //     }
+
+    function verificar(){
+      doencas_selecionadas = [];
+      for(let i=0;i<doencas_dict.length;i++){
+        if(document.getElementById(doencas_dict[i]["id"]).checked){
+          doencas_selecionadas.push(doencas_dict[i]["nome"]);
+        }
+      } 
+      plot_mapa();
+    }
+
+    
+    //var coord = [{lat:-22.9068,lon:-43.1729,municipio:"Rio de Janeiro",doencas:[{nome:"Dengue",casosTotais:50},{nome:"COVID",casosTotais:120},{nome:"Chicungunha",casosTotais:324}]},{lat:-3.4168,lon:-65.8561,municipio:"Apuí",doencas:[{nome:"Chicungunha",casosTotais:100}]}];
+    
+    var coord = `{{chave|safe}}`;
+    coord = eval(coord);
+  
+
+    // var list_features = [];
+    // for (let i=0;i<coord.length;i++){
+    //   for(let j=0;j<coord[i]["doencas"].length;j++){
+    //       list_features.push(new ol.Feature({
+    //                   geometry: new ol.geom.Point(ol.proj.fromLonLat([coord[i]["lon"], coord[i]["lat"]]))
+    //               }));
     //   }
     // }
 
-    var map = new ol.Map({
+  
+      
+      var map = new ol.Map({
       target: 'map',
       layers: [
         new ol.layer.Tile({
@@ -84,108 +96,98 @@
           })
       })
   })
-    //var coord = [{lat:-22.9068,lon:-43.1729,municipio:"Rio de Janeiro",doencas:[{nome:"Dengue",casosTotais:50},{nome:"COVID",casosTotais:120},{nome:"Chicungunha",casosTotais:324}]},{lat:-3.4168,lon:-65.8561,municipio:"Apuí",doencas:[{nome:"Chicungunha",casosTotais:100}]}];
-    
-    var coord = `{{chave|safe}}`;
-    coord = eval(coord);
-  
-
-    var list_features = [];
-    for (let i=0;i<coord.length;i++){
-      for(let j=0;j<coord[i]["doencas"].length;j++){
-          list_features.push(new ol.Feature({
-                      geometry: new ol.geom.Point(ol.proj.fromLonLat([coord[i]["lon"], coord[i]["lat"]]))
-                  }));
-      }
-    }
-
-    // var list_features = [];
-    // for (let i=0;i<coord.length;i++){
-    //   for(let j=0;j<coord[i]["doencas"].length;j++){
-    //     if(doencas_selecionadas.includes(coord[i]["doencas"][j]["nomedoenca"])){
-    //       list_features.push(new ol.Feature({
-    //                   geometry: new ol.geom.Point(ol.proj.fromLonLat([coord[i]["lon"], coord[i]["lat"]]))
-    //               }));
-    //       continue;
-    //     }
-    //   }
-    // }
-    var layer = new ol.layer.Vector({
-      source: new ol.source.Vector({
-          features: list_features
-      }),
-          style: function(feature, resolution) {
-        myStyle.getImage().setScale(1/Math.pow(resolution, 1/1.6));
-        return myStyle;
-    }
-    });
-    map.addLayer(layer);
-  
-  
-    var container = document.getElementById('popup');
-    var content = document.getElementById('popup-content');
-    var closer = document.getElementById('popup-closer');
-  
-    var overlay = new ol.Overlay({
-        element: container,
-        autoPan: true,
-        autoPanAnimation: {
-            duration: 250
-        }
-    });
-    map.addOverlay(overlay);
-
-    closer.onclick = function() {
-        overlay.setPosition(undefined);
-        closer.blur();
-        return false;
-    };
-  
-    map.on('singleclick', function (event) {
-    if (map.hasFeatureAtPixel(event.pixel) === true) {
-        var coordinate = event.coordinate;
-        
-        var lonlat = ol.proj.transform(map.getFeaturesAtPixel(event.pixel)[0].getGeometry().getCoordinates(),'EPSG:3857', 'EPSG:4326')
-        var point_long = lonlat[0];
-        var point_lat = lonlat[1];
-        
-        //procurar pelo municipio:
-  
-        for (let i=0;i<coord.length;i++){
-          if(coord[i]['lon'] == point_long){
-            var position = i;
+    var layer = [];
+    function plot_mapa(){
+      var list_features = [];
+      for (let i=0;i<coord.length;i++){
+        for(let j=0;j<coord[i]["doencas"].length;j++){
+          if(doencas_selecionadas.includes(coord[i]["doencas"][j]["nome"])){
+            list_features.push(new ol.Feature({
+                        geometry: new ol.geom.Point(ol.proj.fromLonLat([coord[i]["lon"], coord[i]["lat"]]))
+                    }));
+            continue;
           }
         }
+      }
+      
+      map.removeLayer(layer);
+      layer = new ol.layer.Vector({
+        source: new ol.source.Vector({
+            features: list_features
+        }),
+            style: function(feature, resolution) {
+          myStyle.getImage().setScale(1/Math.pow(resolution, 1/1.6));
+          return myStyle;
+      }
+      });
+      map.addLayer(layer);
+    
+    
+      var container = document.getElementById('popup');
+      var content = document.getElementById('popup-content');
+      var closer = document.getElementById('popup-closer');
+    
+      var overlay = new ol.Overlay({
+          element: container,
+          autoPan: true,
+          autoPanAnimation: {
+              duration: 250
+          }
+      });
+      map.addOverlay(overlay);
 
-        var tablerows='';
-        for(let i =0;i<coord[position]["doencas"].length;i++){
-              var nome = coord[position]["doencas"][i]["nomedoenca"];
-              var casosTotais= coord[position]["doencas"][i]["casosTotais"];
-              tablerows+="<tr> <th scope='row'>"+nome+"</th>"
-                +"<td>"+casosTotais+"</td>"
-                +"<td>"+coord[position]['municipio']+"</td> </tr>";
-        }
-
-        content.innerHTML = `<table class="table table-sm table-light ">
-        <thead> 
-          <tr>
-            <th scope="col">Doença</th>
-            <th scope="col">Casos Totais</th>
-            <th scope="col">Municipio</th>
-          </tr>
-        </thead>
-        <tbody>`
-          +tablerows+`
-        </tbody>
-        </table>`;
+      closer.onclick = function() {
+          overlay.setPosition(undefined);
+          closer.blur();
+          return false;
+      };
+    
+      map.on('singleclick', function (event) {
+      if (map.hasFeatureAtPixel(event.pixel) === true) {
+          var coordinate = event.coordinate;
           
+          var lonlat = ol.proj.transform(map.getFeaturesAtPixel(event.pixel)[0].getGeometry().getCoordinates(),'EPSG:3857', 'EPSG:4326')
+          var point_long = lonlat[0];
+          var point_lat = lonlat[1];
+          
+          //procurar pelo municipio:
+    
+          for (let i=0;i<coord.length;i++){
+            if(coord[i]['lon'] == point_long){
+              var position = i;
+            }
+          }
 
-      overlay.setPosition(coordinate);
-    } else {
-        overlay.setPosition(undefined);
-        closer.blur();
-    }
-  });
+          var tablerows='';
+          for(let i =0;i<coord[position]["doencas"].length;i++){
+                var nome = coord[position]["doencas"][i]["nome"];
+                var casosTotais= coord[position]["doencas"][i]["casosTotais"];
+                tablerows+="<tr> <th scope='row'>"+nome+"</th>"
+                  +"<td>"+casosTotais+"</td>"
+                  +"<td>"+coord[position]['municipio']+"</td> </tr>";
+          }
+
+          content.innerHTML = `<table class="table table-sm table-light ">
+          <thead> 
+            <tr>
+              <th scope="col">Doença</th>
+              <th scope="col">Casos Totais</th>
+              <th scope="col">Municipio</th>
+            </tr>
+          </thead>
+          <tbody>`
+            +tablerows+`
+          </tbody>
+          </table>`;
+            
+
+        overlay.setPosition(coordinate);
+      } else {
+          overlay.setPosition(undefined);
+          closer.blur();
+      }
+    });
+  }
   </script>
 </div>
 {% endblock %}
